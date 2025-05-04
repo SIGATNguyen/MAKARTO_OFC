@@ -1,0 +1,2266 @@
+/* ----- Mise à jour du reset & base ----- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif; /* Force Arial sur tous les éléments */
+}
+
+:root {
+  /* Palette de couleurs principale */
+  --primary: #AF0D1D;         /* Rouge principal - couleur de l'explosion */
+  --primary-light: #D73C4E;   /* Rouge clair */
+  --primary-dark: #7D0914;    /* Rouge foncé */
+  
+  /* Couleurs secondaires */
+  --secondary: #1A1A1A;       /* Gris très foncé - presque noir */
+  --secondary-light: #333;    /* Gris foncé */
+  --secondary-lighter: #666;  /* Gris moyen */
+  
+  /* Couleurs de fond */
+  --background: #FFFFFF;      /* Blanc */
+  --background-alt: #F6F6F6;  /* Gris très clair */
+  
+  /* Couleurs de texte */
+  --text: #1A1A1A;            /* Noir pour le texte principal */
+  --text-light: #666;         /* Gris pour le texte secondaire */
+  --text-lighter: #999;       /* Gris clair pour les légendes */
+  --text-white: #FFF;         /* Blanc pour le texte sur fond sombre */
+  
+  /* Couleurs fonctionnelles */
+  --success: #f39c9e;         /* Vert pour les zones sauvées */
+  --warning: #ea504c;         /* Orange pour les zones endommagées */
+  --danger: #af0d1d;          /* Rouge foncé pour les zones détruites */
+  
+  /* Dimensions */
+  --header-height: 60px;
+  --footer-height: 300px;
+  --sidebar-width: 300px;
+  
+  /* Z-index layers */
+  --z-back: 1;
+  --z-normal: 2;
+  --z-front: 3;
+  --z-overlay: 10;
+  --z-modal: 20;
+  --z-extreme: 100;
+  
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-normal: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.16), 0 6px 10px rgba(0,0,0,0.1);
+  --shadow-xl: 0 15px 35px rgba(0,0,0,0.18), 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Applique Arial sur le body et html */
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background-color: var(--background);
+  color: var(--text);
+  overflow: hidden;
+  overscroll-behavior: none; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  position: relative;
+}
+
+/* Met à jour les définitions des titres sans spécifier la police */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+}
+
+p {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+
+/* ----- Liens ----- */
+a {
+  color: var(--primary);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.source-link {
+  color: inherit;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.source-link:hover {
+  color: var(--primary);
+}
+
+/* ----- Loader ----- */
+#loading-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-modal);
+  opacity: 1;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#loading-indicator.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-circle {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+#loading-indicator p {
+  color: var(--text-white);
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ----- Global Progress Bar ----- */
+#progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  z-index: var(--z-overlay);
+}
+
+#progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.05s linear;
+}
+
+#progress-indicator {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 12px;
+  height: 9px;
+  background: var(--primary);
+  border-radius: 6px;
+  transform: translateX(0);
+  box-shadow: 0 0 8px rgba(175, 13, 29, 0.8);
+}
+
+/* ----- Map Container ----- */
+#map-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-back);
+  overflow: hidden;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.map-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ----- Scroll Container ----- */
+#scroll-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-normal);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+#scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroller {
+  position: relative;
+  width: 100%;
+}
+
+.step {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: block;
+}
+
+/* ----- Section Badge ----- */
+.section-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.sticky-content:hover .section-badge {
+  transform: translateY(-3px);
+}
+
+/* ----- Intro Section ----- */
+.intro-background {
+  background: var(--secondary);
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.intro-content {
+  width: 80%;
+  max-width: 900px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 50px;
+  border-left: 6px solid var(--primary);
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  animation: fadeInUp 1.2s ease-out;
+  transform: translateY(0);
+  transition: transform 0.4s ease-out;
+}
+
+.intro-content:hover {
+  transform: translateY(-5px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-badge {
+  position: absolute;
+  top: -25px;
+  left: -25px;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transform: rotate(-5deg);
+  z-index: 3;
+}
+
+.pulse-effect {
+  animation: pulse-badge 3s infinite alternate;
+}
+
+@keyframes pulse-badge {
+  0% {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    box-shadow: 0 4px 20px rgba(175, 13, 29, 0.8);
+  }
+}
+
+.intro-title {
+  text-align: center;
+  font-size: 5rem;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  margin: 0;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.intro-line {
+  display: block;
+  margin-bottom: 5px;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.intro-content:hover .intro-line {
+  transform: translateY(-3px);
+}
+
+.intro-line-highlight {
+  display: block;
+  color: var(--primary);
+  font-size: 130%;
+  margin: -5px 0;
+  position: relative;
+  z-index: 2;
+  font-weight: 900;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+.intro-separator {
+  width: 80px;
+  height: 4px;
+  background: var(--primary);
+  margin: 25px auto;
+}
+
+.intro-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  max-width: 550px;
+  margin: 25px auto 0;
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.meta-date, .byline {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 3px;
+  border-bottom: 2px solid rgba(175, 13, 29, 0.7);
+}
+
+.scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Styles pour la nouvelle section de la carte du Pacifique */
+#pacific-map {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#pacific-map .full-width-banner {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#pacific-map .full-width-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#pacific-map .image-credit {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  font-weight: 500;
+  box-shadow: var(--shadow-md);
+}
+
+/* Styles pour la section de contexte du Pacifique */
+#pacific-context {
+  background: white;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 80px 0;
+}
+
+#pacific-context .article-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#pacific-context .content-wrapper {
+  padding: 0 20px;
+  text-align: center;
+}
+
+#pacific-context .section-badge {
+  display: inline-block;
+  background: #AF0D1D;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+#pacific-context .article-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1A1A1A;
+  line-height: 1.2;
+  text-align: center;
+}
+
+#pacific-context .article-content {
+  color: #333;
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Texte justifié */
+#pacific-context .article-content p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+#pacific-context .lead-paragraph {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #1A1A1A;
+}
+
+#pacific-context .article-quote {
+  margin: 30px auto;
+  padding: 20px 30px;
+  font-style: italic;
+  font-size: 20px;
+  border-left: 4px solid #AF0D1D;
+  border-right: 4px solid #AF0D1D;
+  background: #F6F6F6;
+  position: relative;
+  color: #333;
+  max-width: 550px;
+  text-align: center;
+}
+
+#pacific-context .article-quote::before {
+  content: '"';
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 60px;
+  color: #AF0D1D;
+  opacity: 0.2;
+  line-height: 1;
+}
+
+#pacific-context .article-quote cite {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/* ----- Timeline Section Améliorée avec Images de chaque côté ----- */
+#timeline {
+  background-color: var(--background-alt);
+  padding: 80px 0 120px;
+  position: relative;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.timeline-header {
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+.timeline-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 60px;
+  font-family: Arial, sans-serif;
+}
+
+/* Container global de la timeline - Organisation optimisée */
+.timeline {
+  position: relative;
+  margin: 0 auto;
+  padding: 0;
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* Ligne verticale centrale - Améliorée */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  background: linear-gradient(to bottom, 
+    var(--primary-dark),
+    var(--primary),
+    var(--primary-light),
+    var(--primary));
+  transform: translateX(-50%); /* Assure un centrage exact */
+  z-index: 0;
+  border-radius: 3px;
+  box-shadow: var(--shadow-md);
+}
+
+/* Style de chaque élément (bloc événement) - Optimisé avec images */
+.timeline-item {
+  position: relative;
+  width: 100%;
+  margin-bottom: 70px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenu textuel et image des cartes */
+.timeline-content,
+.timeline-image {
+  width: 42%;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content {
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  transform: translateY(0);
+}
+
+.timeline-content:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.timeline-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  border: 3px solid white;
+}
+
+.timeline-image img:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Positionnement gauche-droite */
+.timeline-content.left,
+.timeline-image.left {
+  margin-right: 8%;
+  text-align: right;
+}
+
+.timeline-content.right,
+.timeline-image.right {
+  margin-left: 8%;
+  text-align: left;
+}
+
+.timeline-caption {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Bandeau coloré sur le côté - Optimisé */
+.timeline-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--primary);
+}
+
+.timeline-content.left::after {
+  right: 0;
+}
+
+.timeline-content.right::after {
+  left: 0;
+}
+
+/* Animation au scroll - Plus fluide */
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Style pour les images doubles de l'événement final */
+.timeline-dual-image {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  width: 90%;
+}
+
+.timeline-image-left, .timeline-image-right {
+  width: 48%;
+}
+
+.timeline-image-left img, .timeline-image-right img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  border: 3px solid white;
+}
+
+.timeline-image-left img:hover, .timeline-image-right img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Élément central final - Optimisé */
+.timeline-item.center {
+  width: 80%;
+  margin-left: 10%;
+  flex-direction: column;
+  text-align: center;
+  padding: 0;
+  z-index: 2;
+  margin-top: 30px;
+}
+
+.timeline-item.center .timeline-content {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--primary);
+  text-align: center;
+}
+
+.timeline-item.center .timeline-content::after {
+  display: none;
+}
+
+/* Titres - Optimisés */
+.timeline-title {
+  font-size: 1.3rem;
+  margin: 0 0 12px;
+  color: var(--secondary);
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.timeline-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background-color: var(--primary);
+}
+
+.timeline-content.left .timeline-title::after {
+  right: 0;
+}
+
+.timeline-content.right .timeline-title::after {
+  left: 0;
+}
+
+.timeline-item.center .timeline-title::after {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+}
+
+/* Mise en forme de la date - Optimisée */
+.timeline-date {
+  display: inline-block;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  background-color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 30px;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
+  font-family: Arial, sans-serif;
+}
+
+.timeline-item.center .timeline-date {
+  background-color: var(--primary);
+  font-size: 1.1rem;
+  padding: 8px 15px;
+}
+
+.timeline-content p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+/* Points sur la ligne - Optimisés */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 4px solid var(--primary);
+  border-radius: 50%;
+  z-index: 1;
+  box-shadow: 0 0 0 4px rgba(175, 13, 29, 0.3);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+/* Animation de pulsation - Optimisée */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(175, 13, 29, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(175, 13, 29, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(175, 13, 29, 0);
+  }
+}
+
+.timeline-item.visible::after {
+  animation: pulse 2s infinite;
+}
+
+/* Style pour l'élément central (Heure H) */
+.timeline-item.center::after {
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  background: var(--primary);
+  border: 4px solid white;
+}
+
+/* Horloge pour "Heure H" - Optimisée */
+.timeline-clock {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.clock-face {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: white;
+  position: relative;
+  border: 3px solid var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.clock-hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background: var(--primary);
+  transform-origin: 0 50%;
+  transform: rotate(60deg);
+}
+
+.clock-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: var(--primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Styles pour la section lorem-section */
+#lorem-section {
+  background: white;
+  color: var(--text);
+  min-height: 60vh;
+  padding: 80px 0;
+}
+
+#lorem-section .article-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#lorem-section .content-wrapper {
+  padding: 0 20px;
+  text-align: center;
+}
+
+#lorem-section .section-badge {
+  display: inline-block;
+  background: #AF0D1D;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+#lorem-section .article-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1A1A1A;
+  line-height: 1.2;
+  text-align: center;
+}
+
+#lorem-section .article-content {
+  color: #333;
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Texte justifié */
+#lorem-section .article-content p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+#lorem-section .lead-paragraph {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #1A1A1A;
+}
+
+#lorem-section .article-quote {
+  margin: 30px auto;
+  padding: 20px 30px;
+  font-style: italic;
+  font-size: 20px;
+  border-left: 4px solid #AF0D1D;
+  border-right: 4px solid #AF0D1D;
+  background: #F6F6F6;
+  position: relative;
+  color: #333;
+  max-width: 550px;
+  text-align: center;
+}
+
+#lorem-section .article-quote::before {
+  content: '"';
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 60px;
+  color: #AF0D1D;
+  opacity: 0.2;
+  line-height: 1;
+}
+
+#lorem-section .article-quote cite {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/* Styles pour la section post-infographie */
+#post-infographie-section {
+  background: white;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 80px 0;
+}
+
+#post-infographie-section .article-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#post-infographie-section .content-wrapper {
+  padding: 0 20px;
+  text-align: center;
+}
+
+#post-infographie-section .section-badge {
+  display: inline-block;
+  background: #AF0D1D;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+#post-infographie-section .article-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1A1A1A;
+  line-height: 1.2;
+  text-align: center;
+}
+
+#post-infographie-section .article-content {
+  color: #333;
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Texte justifié */
+#post-infographie-section .article-content p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+#post-infographie-section .lead-paragraph {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #1A1A1A;
+}
+
+#post-infographie-section .article-quote {
+  margin: 30px auto;
+  padding: 20px 30px;
+  font-style: italic;
+  font-size: 20px;
+  border-left: 4px solid #AF0D1D;
+  border-right: 4px solid #AF0D1D;
+  background: #F6F6F6;
+  position: relative;
+  color: #333;
+  max-width: 550px;
+  text-align: center;
+}
+
+#post-infographie-section .article-quote::before {
+  content: '"';
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 60px;
+  color: #AF0D1D;
+  opacity: 0.2;
+  line-height: 1;
+}
+
+#post-infographie-section .article-quote cite {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/* ----- Sticky Container (Hiroshima, Nagasaki et Rennes) ----- */
+.sticky-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 40px;
+  z-index: var(--z-normal);
+}
+
+.sticky-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 35px;
+  max-width: 550px;
+  margin: 20px;
+  box-shadow: var(--shadow-lg);
+  border-radius: 8px;
+  border-left: 5px solid var(--primary);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sticky-content:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ----- Text Container & Content ----- */
+.text-container {
+  background: white;
+  color: var(--text);
+  padding: 30px;
+}
+
+.text-container h2 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  color: var(--secondary);
+}
+
+.intro-paragraph {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1.5em;
+  color: var(--secondary);
+}
+
+/* Points d'impact */
+.impact-legend {
+  list-style: none;
+  margin: 20px 0;
+}
+
+/* Ajoute les deux-points avec espaces insécables après les balises strong */
+.impact-legend li strong::after {
+  content: "\00A0:\00A0"; /* Espace insécable + deux-points + espace insécable */
+}
+
+/* Empêche le retour à la ligne dans les éléments de légende */
+.impact-legend li {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  margin-bottom: 12px;
+}
+
+/* Assure que le texte strong ne se rétrécit pas */
+.impact-legend li strong {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* S'assure que le point de couleur reste aligné */
+.impact-legend .impact-dot {
+  flex-shrink: 0;
+  margin-right: 10px;
+  margin-top: 4px; /* Ajuste l'alignement vertical du point */
+}
+
+.impact-dot {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.impact-dot.destruction {
+  background: var(--danger);
+}
+
+.impact-dot.partial, .impact-dot.fire {
+  background: var(--warning);
+}
+
+.impact-dot.spared, .impact-dot.radiation {
+  background: var(--success);
+}
+
+.impact-dot.radiation {
+  background: var(--radiation);
+}
+
+/* Conteneur de statistiques */
+.stat-container {
+  display: flex;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.stat-item {
+  flex: 1;
+  background: var(--background-alt);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border-bottom: 3px solid var(--primary);
+  transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* Prompt d'exploration suite */
+.explore-prompt {
+  background: var(--secondary-light);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: glow 3s infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(175, 13, 29, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(175, 13, 29, 0.6);
+  }
+}
+
+/* ----- Sections Hiroshima, Nagasaki et Rennes Impact ----- */
+#hiroshima,
+#nagasaki,
+#rennes-impact {
+  min-height: 200vh;
+}
+
+/* ----- Infographie Section ----- */
+#infographie-hiroshima {
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 60px 0;
+}
+
+.infographie-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 40px;
+  gap: 40px;
+}
+
+.infographie-text {
+  flex: 0 0 40%;
+  background: white;
+  padding: 30px;
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.infographie-text:hover {
+  transform: translateY(-5px);
+}
+
+.infographie-tabs {
+  display: flex;
+  margin: 25px 0 15px;
+  border-bottom: 2px solid var(--background-alt);
+}
+
+.tab-btn {
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  font-weight: bold;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tab-btn:hover {
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary);
+}
+
+.tab-content {
+  display: none;
+  padding: 20px 0;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.data-list {
+  list-style: none;
+}
+
+.data-list li {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--background-alt);
+}
+
+.data-list li:last-child {
+  border-bottom: none;
+}
+
+.data-list li strong {
+  color: var(--secondary);
+}
+
+/* Partie interactive de l'infographie - SIMPLIFIÉE */
+.infographie-image {
+  flex: 0 0 60%;
+}
+
+.infographie-interactive {
+  background: var(--secondary-light);
+  padding: 30px;
+  border-radius: 8px;
+  color: white;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Affichage des bombes */
+.bomb-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.bomb-display img {
+  max-height: 300px;
+  max-width: 100%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.bomb-display img:hover {
+  transform: translateY(-10px);
+}
+
+.bomb-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  text-align: center;
+  border-radius: 0 0 8px 8px;
+}
+
+.bomb-info span {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.bomb-info .bomb-power {
+  color: var(--primary-light);
+  margin-left: 10px;
+}
+
+/* Animations pour les bombes */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-bomb {
+  animation: fadeInScale 0.5s ease forwards;
+}
+
+/* ----- Conclusion Section ----- */
+#conclusion {
+  background: white;
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* Style pour le bandeau pleine largeur */
+.full-width-banner {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow: hidden;
+  height: 620px;
+}
+
+.full-width-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.full-width-banner .image-credit {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+/* Ajuster le style du conteneur d'article pour qu'il commence après l'image */
+#conclusion .article-container {
+  max-width: 800px;
+  margin: 40px auto 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#conclusion .content-wrapper {
+  padding: 0 20px;
+  text-align: center;
+}
+
+#conclusion .section-badge {
+  display: inline-block;
+  background: #AF0D1D;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+#conclusion .article-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1A1A1A;
+  line-height: 1.2;
+  text-align: center;
+}
+
+#conclusion .article-content {
+  color: #333;
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Texte justifié */
+#conclusion .article-content p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+#conclusion .lead-paragraph {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #1A1A1A;
+}
+
+#conclusion .article-quote {
+  margin: 30px auto;
+  padding: 20px 30px;
+  font-style: italic;
+  font-size: 20px;
+  border-left: 4px solid #AF0D1D;
+  border-right: 4px solid #AF0D1D;
+  background: #F6F6F6;
+  position: relative;
+  color: #333;
+  max-width: 550px;
+  text-align: center;
+}
+
+#conclusion .article-quote::before {
+  content: '"';
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 60px;
+  color: #AF0D1D;
+  opacity: 0.2;
+  line-height: 1;
+}
+
+#conclusion .article-quote cite {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/* ----- Footer Section ----- */
+#footer {
+  background: var(--secondary);
+  color: white;
+  padding: 60px 0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.footer-logo {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Ajout d'un style pour le texte à la place du logo */
+.footer-logo h3 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.footer-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: var(--primary);
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background-color: var(--primary);
+}
+
+.footer-section p {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.copyright-info {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.copyright-info p {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* ----- Legend ----- */
+#fixed-legend {
+  position: fixed !important;
+  top: 20px !important;
+  left: 20px !important;
+  z-index: var(--z-overlay) !important;
+}
+
+.fixed-legend-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-md);
+  border: none;
+  border-left: 4px solid var(--primary);
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.fixed-legend-content:hover {
+  transform: translateY(-3px);
+}
+
+.legend-title {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: var(--secondary);
+}
+
+.toggle-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #eee;
+  border-radius: 30px;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-bottom: 8px;
+}
+
+.toggle-btn:hover {
+  background: white;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+.toggle-btn.inactive {
+  opacity: 0.5;
+}
+
+.toggle-btn svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.toggle-label {
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+/* ----- Responsive Design ----- */
+@media (max-width: 1200px) {
+  .intro-title {
+    font-size: 4rem;
+  }
+  
+  .intro-content {
+    width: 90%;
+    padding: 40px;
+  }
+  
+  .infographie-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .infographie-text,
+  .infographie-image {
+    flex: 0 0 100%;
+    max-width: 700px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  
+  .sticky-container {
+    justify-content: center;
+    padding-right: 0;
+  }
+  
+  .sticky-content {
+    max-width: 90%;
+  }
+  
+  #conclusion .article-container {
+    max-width: 90%;
+  }
+  
+  .columns-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Responsive pour la timeline */
+  .timeline-item {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .timeline-content, .timeline-image {
+    width: 80%;
+    margin: 0 0 20px 0 !important;
+    text-align: center !important;
+  }
+  
+  .timeline-content.left .timeline-title::after,
+  .timeline-content.right .timeline-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  h1 {
+    font-size: 2.8rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  .intro-title {
+    font-size: 3.2rem;
+  }
+  
+  .intro-badge {
+    font-size: 1rem;
+    top: -20px;
+    left: -15px;
+  }
+  
+  .intro-content {
+    padding: 30px;
+  }
+  
+  #fixed-legend {
+    left: 10px;
+    bottom: 10px;
+    top: auto;
+  }
+  
+  .fixed-legend-content {
+    max-width: calc(100vw - 20px);
+  }
+  
+  .infographie-interactive {
+    height: auto;
+    padding: 20px;
+  }
+  
+  .bomb-display {
+    height: auto;
+    margin-bottom: 40px;
+  }
+  
+  .footer-info {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .full-width-banner {
+    height: 300px;
+  }
+  
+  #conclusion .article-title {
+    font-size: 24px;
+  }
+  
+  #conclusion .lead-paragraph {
+    font-size: 16px;
+  }
+  
+  #conclusion .article-quote {
+    font-size: 18px;
+    padding: 15px 20px;
+  }
+  
+  .content-container {
+    padding: 0 15px;
+  }
+  
+  #lorem-section .article-title,
+  #post-infographie-section .article-title,
+  #pacific-context .article-title {
+    font-size: 24px;
+  }
+  
+  #lorem-section .lead-paragraph,
+  #post-infographie-section .lead-paragraph,
+  #pacific-context .lead-paragraph {
+    font-size: 16px;
+  }
+  
+  #lorem-section .article-quote,
+  #post-infographie-section .article-quote,
+  #pacific-context .article-quote {
+    font-size: 18px;
+    padding: 15px 20px;
+  }
+}
+  
+.section-title {
+  font-size: 2rem;
+}
+
+@media (max-width: 600px) {
+  body {
+    cursor: auto;
+  }
+  
+  .intro-title {
+    font-size: 2.5rem;
+  }
+  
+  .intro-line-highlight {
+    font-size: 120%;
+  }
+  
+  .intro-meta {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .timeline::before {
+    left: 20px;
+  }
+  
+  /* Adaptation responsive pour la timeline */
+  .timeline {
+    width: 95%;
+  }
+  
+  .timeline-item {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 15px;
+    left: 0 !important;
+    text-align: left !important;
+    margin-bottom: 40px;
+  }
+  
+  .timeline-content, .timeline-image {
+    width: 100% !important;
+  }
+  
+  .timeline-item::after {
+    left: 12px;
+    right: auto;
+  }
+  
+  .timeline-content.left::after,
+  .timeline-content.right::after {
+    left: 0;
+    right: auto;
+  }
+  
+  .timeline-dual-image {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .timeline-image-left, .timeline-image-right {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .sticky-content {
+    max-width: 100%;
+    margin: 10px;
+    padding: 20px;
+  }
+  
+  .stat-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .tab-btn {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .full-width-banner {
+    height: 200px;
+  }
+  
+  #conclusion .article-quote {
+    padding: 15px;
+    font-size: 16px;
+  }
+  
+  #progress-container {
+    height: 4px;
+  }
+  
+  /* Rendre les légendes adaptées au mobile */
+  #fixed-legend {
+    width: calc(100% - 20px);
+    text-align: center;
+  }
+  
+  .fixed-legend-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .toggle-btn {
+    margin: 5px;
+  }
+  
+  .lead-paragraph {
+    font-size: 1.1rem;
+  }
+  
+  .clock-face {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .clock-hand {
+    width: 25px;
+  }
+
+  /* Ajustements pour la section de la carte du Pacifique sur mobile */
+  #pacific-map .full-width-banner {
+    height: 50vh !important;
+  }
+  
+  #pacific-map .image-credit {
+    font-size: 12px;
+    padding: 5px 10px;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+/* ----- Animation d'apparition générale ----- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----- Correction pour le menu de navigation et les liens ----- */
+.maplibregl-ctrl a {
+  color: transparent !important;
+  text-decoration: none !important;
+}
+
+.maplibregl-ctrl-attrib-inner a {
+  color: #333 !important;
+}
+
+/* ----- Correction pour la légende ----- */
+.toggle-btn {
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+.toggle-btn.active {
+  opacity: 1 !important;
+}
+
+.toggle-btn.inactive {
+  opacity: 0.5 !important;
+}
+
+/* ----- Modification pour permettre le scroll sur mobile ----- */
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto !important; /* Réactiver le scroll natif sur mobile */
+    height: auto !important;   /* Permettre au contenu de définir la hauteur */
+    position: static !important; /* Éviter les problèmes de positionnement fixe */
+  }
+  
+  #scroll-container {
+    position: static !important; /* Pas de position absolue sur mobile */
+    height: auto !important;     /* Hauteur basée sur le contenu */
+    overflow: visible !important; /* Montrer tout le contenu */
+  }
+  
+  .step {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+  }
+  
+  .sticky-container {
+    position: relative !important; /* Pas de position sticky sur mobile */
+    height: auto !important;
+    top: auto !important;
+  }
+  
+  #map-container {
+    position: relative !important; /* La carte devient un élément normal du flux */
+    height: 50vh !important;       /* Hauteur fixe pour la carte */
+    margin-bottom: 20px !important;
+  }
+  
+  /* Ajuster la légende pour qu'elle soit visible sur la carte mobile */
+  #fixed-legend {
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    z-index: 1000 !important;
+  }
+  
+  .full-width-banner {
+    height: 200px !important;
+  }
+}
+
+/* Style pour la section des logos */
+.footer-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.footer-logo-img {
+  height: 60px; /* Logo plus grand */
+  width: auto;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+/* Style spécifique pour le logo SIGAT */
+.footer-logos img[src*="Logo_sigat.svg"] {
+  filter: brightness(0) invert(1); /* Convertit le logo noir en blanc */
+  height: 80px; /* Logo SIGAT encore plus grand */
+}
+
+.footer-logo-img:hover {
+  opacity: 1;
+}
+
+/* Responsive design pour les logos */
+@media (max-width: 768px) {
+  .footer-logos {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Styles pour l'infographie des bombes - Version simplifiée */
+
+/* Augmenter la hauteur de la section interactive pour qu'elle soit plus en accord avec la hauteur du texte */
+.infographie-interactive {
+  height: 600px !important; /* Augmenté pour s'adapter au contenu du texte */
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style pour le conteneur principal des bombes */
+.bomb-display {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Style pour le conteneur de chaque bombe */
+.bomb-container {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Agrandir les images des bombes */
+.bomb-container img {
+  max-height: 450px; /* Augmenté pour plus de visibilité */
+  width: auto;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.bomb-container img:hover {
+  transform: translateY(-5px);
+  filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
+}
+
+/* Style pour le titre sous les bombes */
+.bomb-title {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  width: 100%;
+  padding: 10px 15px;
+  text-align: center;
+  border-radius: 4px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bomb-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.bomb-power {
+  color: #ff4d4d;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+/* Style pour la comparaison des bombes */
+.bombs-comparison {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Animation pour l'apparition des bombes */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-bomb {
+  animation: fadeInScale 0.5s ease forwards;
+}
+
+/* Ajustements responsive */
+@media (max-width: 1200px) {
+  .bombs-comparison {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .bomb-container {
+    width: 100%;
+  }
+  
+  .bomb-container img {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .infographie-interactive {
+    height: auto !important;
+    min-height: 500px;
+  }
+  
+  .bomb-container img {
+    max-height: 250px;
+  }
+  
+  .bomb-name {
+    font-size: 1.2rem;
+  }
+  
+  .bomb-power {
+    font-size: 1rem;
+  }
+}
+
+.pacific-map-special {
+  min-height: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.pacific-map-special img {
+  max-width: none !important;
+  width: 100% !important;
+}
