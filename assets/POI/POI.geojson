@@ -1,0 +1,18 @@
+{
+"type": "FeatureCollection",
+"name": "poi_int",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "nom": "Hypocentre de la bombe de Nagasaki" }, "geometry": { "type": "Point", "coordinates": [ 129.864919428256513, 32.779204002183505 ] } },
+{ "type": "Feature", "properties": { "id": 2, "nom": "Cathédrale d’Urakami" }, "geometry": { "type": "Point", "coordinates": [ 129.868359728910349, 32.776164437590367 ] } },
+{ "type": "Feature", "properties": { "id": 3, "nom": "Stade" }, "geometry": { "type": "Point", "coordinates": [ 129.861441573096897, 32.772880073541977 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Ancienne usine Mitsubishi" }, "geometry": { "type": "Point", "coordinates": [ 129.869172467999846, 32.773989876262064 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Dôme de Genbaku" }, "geometry": { "type": "Point", "coordinates": [ 132.453551659013954, 34.395423522920041 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Hypocentre de la bombe d'Hiroshima" }, "geometry": { "type": "Point", "coordinates": [ 132.454686050238621, 34.394815293126605 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Complexe du Château de Hiroshima - Siège du commandement de la 2e armée générale japonaise" }, "geometry": { "type": "Point", "coordinates": [ 132.459641747842625, 34.401627751517729 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Opéra de Rennes" }, "geometry": { "type": "Point", "coordinates": [ -1.678758525751991, 48.111355167796823 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Place Sainte-Anne" }, "geometry": { "type": "Point", "coordinates": [ -1.680597572343934, 48.114628308373049 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Gare" }, "geometry": { "type": "Point", "coordinates": [ -1.672215886318008, 48.10355295128862 ] } },
+{ "type": "Feature", "properties": { "id": null, "nom": "Hôpital Pontchaillou" }, "geometry": { "type": "Point", "coordinates": [ -1.694141528463787, 48.119699123328132 ] } }
+]
+}
