@@ -248,9 +248,9 @@ function addPointsOfInterest() {
           'step',
           ['zoom'], 
           0,    // Invisible aux petits zoom
-          10, 11,
-          12, 13,
-          14, 15
+          10, 8,
+          12, 12,
+          14, 13
         ],
         'text-offset': [0, -1.5],
         'text-anchor': 'bottom',
@@ -272,8 +272,8 @@ function addPointsOfInterest() {
       paint: {
         'text-color': '#ffffff',
         'text-halo-color': '#000000',
-        'text-halo-width': 2,
-        'text-halo-blur': 0.3,
+        'text-halo-width': 1,
+        'text-halo-blur': 0.2,
       }
     });
     
