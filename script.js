@@ -512,7 +512,7 @@ function handleStepEnter(response) {
         break;
       
       case "hiroshima":
-        map.flyTo({ center: [132.49214, 34.39090], zoom: 12.59, bearing: -8, pitch: 18, duration: 8000 });
+        map.flyTo({ center: [132.49214, 34.39090], zoom: 12.4, bearing: -8, pitch: 18, duration: 8000 });
         
         // Montrer la légende et activer toutes les couches immédiatement
         if (legendHiroshima) {
@@ -556,7 +556,7 @@ function handleStepEnter(response) {
         break;
       
       case "nagasaki":
-        map.flyTo({ center: [129.87881, 32.75857], zoom: 13.2, bearing: -49.60, pitch: 34.50, duration: 8000 });
+        map.flyTo({ center: [129.87881, 32.75857], zoom: 13.1, bearing: -49.60, pitch: 34.50, duration: 8000 });
         
         // Montrer la légende et activer toutes les couches immédiatement
         if (legendNagasaki) {
@@ -610,7 +610,7 @@ function handleStepEnter(response) {
       
       // Nouvelle section pour Rennes
       case "rennes-impact":
-        map.flyTo({ center: [-1.62366, 48.11567], zoom: 12.5, bearing: 0, pitch: 0, duration: 8000 });
+        map.flyTo({ center: [-1.64124, 48.11316], zoom: 12.4, bearing: 0, pitch: 0, duration: 8000});
         
         // Montrer la légende et activer toutes les couches immédiatement
         if (legendRennes) {
