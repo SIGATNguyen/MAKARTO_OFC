@@ -1070,6 +1070,50 @@ function initProgressBar() {
   }
 }
 
+
+
+
+
+
+function toggleBibliography() {
+  const content = document.getElementById('bibliography');
+  const toggle = document.querySelector('.bibliography-toggle');
+  const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+  
+  toggle.setAttribute('aria-expanded', !isExpanded);
+  content.setAttribute('aria-hidden', isExpanded);
+  
+  if (!isExpanded) {
+    content.style.display = 'block';
+    content.classList.remove('closing');
+  } else {
+    content.classList.add('closing');
+    setTimeout(() => {
+      content.style.display = 'none';
+      content.classList.remove('closing');
+    }, 500); // Délai correspondant à la durée de l'animation
+  }
+}
+
+// INITIALIZE
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.bibliography-toggle');
+  const content = document.getElementById('bibliography');
+  
+  toggle.setAttribute('aria-expanded', 'false');
+  content.setAttribute('aria-hidden', 'true');
+});
+
+
+
+
+
+
+
+
+
+
+
 // ======= INITIALISATION GÉNÉRALE =======
 document.addEventListener('DOMContentLoaded', function() {
   console.log("DOM chargé, initialisation...");
