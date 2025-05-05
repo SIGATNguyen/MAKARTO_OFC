@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ======= INITIALISATION MAPLIBRE =======
 var map = new maplibregl.Map({
   container: 'map',
-  style: 'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json',
+  style: 'https://basemaps.cartocdn.com/gl/voyager-nolabels-gl-style/style.json',
   center: [132.49859, 34.38477],
   zoom: 12.5,
   pitch: 0,
