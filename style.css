@@ -2256,11 +2256,282 @@ a:hover {
 
 .pacific-map-special {
   min-height: auto !important;
-  height: auto !important;
-  overflow: visible !important;
+  height: auto !important;  /* Garder la hauteur de la section */
+  overflow: hidden !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;  /* Couleur de fond pour les bordures */
 }
 
 .pacific-map-special img {
-  max-width: none !important;
-  width: 100% !important;
+  max-width: 60% !important;  /* Réduire la largeur à 80% */
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+
+
+/*-------------*/
+
+/* FOOTER PROFESSIONNEL OUEST-FRANCE */
+#footer {
+  background: #292929;
+  color: #e0e0e0;
+  font-family: Arial, sans-serif;
+  padding: 60px 0;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* HEADER SECTION */
+.footer-header {
+  margin-bottom: 60px;
+  border-bottom: 1px solid #404040;
+  padding-bottom: 40px;
+}
+
+.footer-logo {
+  text-align: center;
+}
+
+.footer-brand-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo-img {
+  height: 50px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-img:hover {
+  transform: translateY(-3px);
+}
+
+.footer-logo h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+
+.footer-logo-img[src*="sigat"] {
+  height: 80px !important;  /* Plus grand que les 50px par défaut */
+}
+
+/* MAIN CONTENT - GRID */
+.footer-main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  margin-bottom: 60px;
+}
+
+.footer-column h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 15px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 30px;
+  height: 2px;
+  background: #af0d1d;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  margin-bottom: 10px;
+}
+
+.source-link {
+  color: #ffffff !important;  /* Blanc au lieu de bleu */
+  text-decoration: underline !important;
+  transition: all 0.3s ease;
+}
+
+.source-link:hover {
+  color: #E2001A !important;  /* Rouge au survol */
+  text-decoration: underline !important;
+}
+
+/* BIBLIOGRAPHY SECTION */
+.bibliography-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #404040;
+}
+
+.bibliography-toggle h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.bibliography-toggle[aria-expanded="true"] .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.bibliography-content {
+  display: none;
+  animation: slideDown 0.5s ease forwards;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.bibliography-content[aria-hidden="false"] {
+  display: block;
+  animation: slideDown 0.5s ease forwards;
+}
+
+.bibliography-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 40px;
+}
+
+.bibliography-group {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid #404040;
+}
+
+.bibliography-group h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #404040;
+}
+
+.bibliography-item {
+  margin-bottom: 20px;
+  position: relative;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.01);
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.bibliography-item:hover {
+  border-left-color: #af0d1d;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.bibliography-item p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.bibliography-category {
+  display: inline-block;
+  background: #af0d1d;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* COPYRIGHT BAR */
+.footer-copyright {
+  border-top: 1px solid #404040;
+  padding-top: 30px;
+  margin-top: 60px;
+}
+
+.copyright-container {
+  text-align: center;
+}
+
+/* ANIMATIONS */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .footer-main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    padding: 40px 20px;
+  }
+  
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-brand-img {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .bibliography-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ajoutez cette nouvelle animation pour la fermeture */
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.bibliography-content.closing {
+  animation: slideUp 0.5s ease forwards;
 }
