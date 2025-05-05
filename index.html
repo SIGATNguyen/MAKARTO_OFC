@@ -433,8 +433,8 @@
               Comment visualiser l'ampleur des bombardements atomiques dans un contexte qui nous est familier ? Cette simulation montre l'impact qu'aurait eu "Little Boy" sur la ville de Rennes aujourd'hui.
             </p>
             <ul class="impact-legend">
-              <li><span class="impact-dot destruction"></span><strong>Zones rouge foncé</strong> Destruction totale dans un rayon de 1,6 km autour du point d'impact (centre-ville).</li>
-              <li><span class="impact-dot partial"></span><strong>Zones rouge clair</strong> Dommages structurels majeurs jusqu'à 3,2 km, affectant la majeure partie de la ville.</li>
+              <li><span class="impact-dot destruction"></span><strong>Zone rouge foncé</strong> Destruction totale dans un rayon de 1,6 km autour du point d'impact (centre-ville).</li>
+              <li><span class="impact-dot partial"></span><strong>Zone rouge clair</strong> Dommages structurels majeurs jusqu'à 3,2 km, affectant la majeure partie de la ville.</li>
             </ul>
             <p>
               Cette simulation illustre l'échelle des destructions et permet de mieux comprendre l'impact concret qu'ont eu ces armes sur Hiroshima et Nagasaki.
@@ -503,36 +503,127 @@
       <!-- Section Footer -->
       <section id="footer">
         <article class="footer-content">
-          <div class="footer-logo">
-            <h3>Sources</h3>
+          <!-- HEADER SECTION -->
+          <div class="footer-header">
+            <div class="footer-logo">
+              <div class="footer-brand-img">
+                <a href="https://esigat.wordpress.com/" target="_blank">
+                  <img src="./assets/logo/logo_sigat.svg" alt="Logo SIGAT" class="footer-logo-img">
+                </a>
+                <a href="https://www.ouest-france.fr/" target="_blank">
+                  <img src="./assets/logo/logo_ouest_france.svg" alt="Logo Ouest-France" class="footer-logo-img">
+                </a>
+              </div>
+              <h2>Sources et références</h2>
+            </div>
           </div>
-          <div class="footer-info">
-            <div class="footer-section">
+          
+          <!-- MAIN CONTENT -->
+          <div class="footer-main">
+            <!-- ABOUT SECTION -->
+            <div class="footer-column">
               <h3>À propos</h3>
-              <p><a href="https://esigat.wordpress.com/" target="_blank"  class="source-link">© 2025 MASTER SIGAT - Université Rennes 2</a></p>
-              <p><a href="https://www.ouest-france.fr/" target="_blank" class="source-link">En partenariat avec Ouest-France</a></p>
+              <ul>
+                <li><a href="https://esigat.wordpress.com/" target="_blank" class="source-link">© 2025 MASTER SIGAT - Université Rennes 2</a></li>
+                <li><a href="https://www.ouest-france.fr/" target="_blank" class="source-link">En partenariat avec Ouest-France</a></li>
+              </ul>
             </div>
-            <div class="footer-section">
-              <h3>Données géospatiales</h3>
-              <p>Données géospatiales - © SIGAT</p>
-              <p>Fond de carte - © <a href="https://carto.com/" target="_blank" class="source-link">CARTO</a> et © <a href="https://www.openstreetmap.org/copyright" target="_blank" class="source-link">OpenStreetMap contributors</a></p>
+            
+            <!-- TECHNICAL INFO -->
+            <div class="footer-column">
+              <h3>Données et technologies</h3>
+              <ul>
+                <li>Données géospatiales - © SIGAT</li>
+                <li>Fond de carte - © <a href="https://carto.com/" target="_blank" class="source-link">CARTO</a></li>
+                <li>Contributeurs © <a href="https://www.openstreetmap.org/copyright" target="_blank" class="source-link">OpenStreetMap</a></li>
+              </ul>
             </div>
-            <div class="footer-section">
-              <h3>Bibliothèque</h3>
-              <p><a href="https://carto.com/legal/" target="_blank" class="source-link">CARTO Vector Tiles</a></p>
-              <p>Développé avec <a href="https://maplibre.org/" target="_blank" class="source-link">MapLibre</a> et <a href="https://github.com/russellsamora/scrollama" class="source-link">Scrollama</a></p>
+            
+            <!-- LIBRARIES -->
+            <div class="footer-column">
+              <h3>Bibliothèques / Libraries</h3>
+              <ul>
+                <li><a href="https://carto.com/legal/" target="_blank" class="source-link">CARTO Vector Tiles</a></li>
+                <li>Développé avec <a href="https://maplibre.org/" target="_blank" class="source-link">MapLibre</a></li>
+                <li>et <a href="https://github.com/russellsamora/scrollama" target="_blank" class="source-link">Scrollama</a></li>
+              </ul>
             </div>
           </div>
-          <div class="copyright-info">
-            <p>Tous droits réservés.</p>
-            <div class="footer-logos">
-              <a href="https://esigat.wordpress.com/" target="_blank">
-                <img src="./assets/logo/logo_sigat.svg" alt="Logo SIGAT" class="footer-logo-img">
-              </a>
-              <a href="https://www.ouest-france.fr/" target="_blank">
-                <img src="./assets/logo/logo_ouest_france.svg" alt="Logo Ouest-France" class="footer-logo-img">
-              </a>
+          
+          <!-- BIBLIOGRAPHY SECTION - Collapsible for better UX -->
+          <div class="bibliography-section">
+            <button class="bibliography-toggle" onclick="toggleBibliography()">
+              <h3>Bibliographie</h3>
+              <svg class="toggle-icon" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M7 9l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+            </button>
+            
+            <div class="bibliography-content" id="bibliography">
+              <div class="bibliography-grid">
+                <!-- BOOKS AND ARTICLES -->
+                <div class="bibliography-group">
+                  <h4>Ouvrages et articles</h4>
+                  <div class="bibliography-item">
+                    <p>Barthélémy Courmont, 2015, <em>Le Japon de Hiroshima : l'abîme et la résilience</em>, Paris : édition Vendémiaire, 1 volume, 283 pages.</p>
+                    <span class="bibliography-category">Histoire</span>
+                  </div>
+                  <div class="bibliography-item">
+                    <p>Patrick Souty, 1995, <em>La guerre du Pacifique, 7 juillet 1937-2 septembre 1945 : l'Asie du Sud-Est au centre des enjeux</em>, Presses universitaires de Lyon, 1 volume, 183 pages.</p>
+                    <span class="bibliography-category">Histoire</span>
+                  </div>
+                  <div class="bibliography-item">
+                    <p>Gerhard Weinberg, 1994, <em>A world at arms : a global history of World War II</em>, Cambridge : Cambridge university press, 1 volume, 1178 pages.</p>
+                    <span class="bibliography-category">Histoire</span>
+                  </div>
+                  <div class="bibliography-item">
+                    <p>Jean Lopez, Nicolas Aubin, Vincent Bernard, 2018, <em>Infographie de la Seconde Guerre mondiale</em>, édition Perrin, 1 volume, 191 pages.</p>
+                    <span class="bibliography-category">Infographie</span>
+                  </div>
+                </div>
+                
+                <!-- SCIENTIFIC DOCUMENTS -->
+                <div class="bibliography-group">
+                  <h4>Documents scientifiques</h4>
+                  <div class="bibliography-item">
+                    <p>The United States Strategic Bombing Survey, 1946, <em>The effects of Atomic Bombs on Hiroshima and Nagasaki</em><br>
+                    <a href="https://www.trumanlibrary.gov/library/research-files/united-states-strategic-bombing-survey-effects-atomic-bombs-hiroshima-and" target="_blank" class="source-link">Documentation officielle</a></p>
+                    <span class="bibliography-category">Document officiel</span>
+                  </div>
+                  <div class="bibliography-item">
+                    <p>Bertrand Jordan, 2018, <em>Les survivants d'Hiroshima/Nagasaki et leur descendance</em>, Sciences médicales, volume 34<br>
+                    <a href="https://www.medecinesciences.org/en/articles/medsci/full_html/2018/02/medsci20183402p171/medsci20183402p171.html" target="_blank" class="source-link">Lire l'article</a></p>
+                    <span class="bibliography-category">Recherche médicale</span>
+                  </div>
+                  <div class="bibliography-item">
+                    <p>Alex Wellerstein, August 4, 2020, <em>Counting the dead at Hiroshima and Nagasaki</em>, Bulletin of the Atomic Scientists<br>
+                    <a href="https://thebulletin.org/2020/08/counting-the-dead-at-hiroshima-and-nagasaki/" target="_blank" class="source-link">Consulter l'article</a></p>
+                    <span class="bibliography-category">Analyse</span>
+                  </div>
+                </div>
+                
+                <!-- CARTOGRAPHIC SOURCES -->
+                <div class="bibliography-group">
+                  <h4>Sources cartographiques</h4>
+                  <div class="bibliography-item">
+                    <p><strong>Hiroshima</strong><br>United States, Army Map Service, 1946, <em>Hiroshima Prefecture</em>, Scale 1:12,500<br>
+                    <a href="https://purl.stanford.edu/tg289tg2255" target="_blank" class="source-link">Stanford University Libraries</a></p>
+                    <span class="bibliography-category">Cartographie</span>
+                  </div>
+                  <div class="bibliography-item">
+                    <p><strong>Nagasaki</strong><br>United States, Army Map Service, 1945, <em>Nagasaki Prefecture</em>, Scale 1:12,500<br>
+                    <a href="https://purl.stanford.edu/jx233ps8560" target="_blank" class="source-link">Stanford University Libraries</a></p>
+                    <span class="bibliography-category">Cartographie</span>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          
+          <!-- COPYRIGHT BAR -->
+          <div class="footer-copyright">
+            <div class="copyright-container">
+              <p>© 2025 MASTER SIGAT - Université Rennes 2 en partenariat avec Ouest-France. Tous droits réservés.</p>
           </div>
         </article>
       </section>
