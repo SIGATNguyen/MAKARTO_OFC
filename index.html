@@ -92,10 +92,10 @@
     </div>
   </div>
   
-  <!-- Contenu du scrollytelling avec sections améliorées -->
+  <!-- Contenu du scrollytelling avec sections -->
   <main id="scroll-container">
     <div class="scroller">
-      <!-- Section Intro - fond uni au lieu d'image -->
+      <!-- Section Intro -->
       <section class="step" id="intro">
         <div class="intro-background">
           <div class="intro-overlay">
@@ -125,48 +125,36 @@
         </div>
       </section>
       
-      <!-- Nouvelle section avec l'image du Pacifique Sud en grand - CORRIGÉE -->
-      <section class="step pacific-map-special" id="pacific-map">
-        <img src="./assets/carte_pacifique/pacific_ok.png" 
-             style="width: 100%; height: auto; display: block;" 
-             alt="Théâtre des opérations dans le Pacifique" />
-        <div style="position: absolute; bottom: 20px; right: 20px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 8px 15px; font-size: 14px; border-radius: 4px;">
-          Théâtre des opérations dans le Pacifique
-        </div>
-      </section>
-      
-      <!-- Nouvelle section texte après l'image du Pacifique -->
-      <section class="step" id="pacific-context">
-        <article class="article-container">
-          <div class="content-wrapper">
-            <div class="section-badge">Théâtre des opérations</div>
-            <h2 class="article-title">Le tournant nucléaire face la résistance Japonaise en 1945</h2>
+      <!-- Section combinée de la carte du Pacifique -->
+      <section class="step pacific-combined" id="pacific-combined">
+        <div class="pacific-container">
+          <!-- Partie gauche - carte pleine largeur -->
+          <div class="pacific-map-side">
+            <img src="./assets/carte_pacifique/pacific_ok.png" alt="Théâtre des opérations dans le Pacifique">
+          </div>
+          
+          <!-- Partie droite - contenu textuel formaté -->
+          <div class="pacific-text-side">
+            <div class="pacific-badge">Théâtre des opérations</div>
+            <h2 class="pacific-title">Le tournant nucléaire face la résistance Japonaise en 1945</h2>
             
-            <div class="article-content">
+            <div class="pacific-content">
+              <p>Après l'attaque de Pearl Harbor en décembre 1941, les États-Unis entrent en guerre contre le Japon. Allié de l'Allemagne nazie, l'Empire nippon poursuit alors son expansion en Asie du Sud-Est jusqu'en 1943. Face à cette avancée, Washington adopte une stratégie de reconquête progressive dans le Pacifique. Le conflit, d'une violence extrême, culmine au printemps 1945 avec la bataille d'Okinawa, révélant le coût humain démesuré qu'impliquerait une invasion directe du Japon.</p>
               
-              <p>
-                Après l'attaque de Pearl Harbor en décembre 1941, les États-Unis entrent en guerre contre le Japon. Allié de l'Allemagne nazie, l'Empire nippon poursuit alors son expansion en Asie du Sud-Est jusqu'en 1943. Face à cette avancée, Washington adopte une stratégie de reconquête progressive dans le Pacifique. Le conflit, d'une violence extrême, culmine au printemps 1945 avec la bataille d'Okinawa, révélant le coût humain démesuré qu'impliquerait une invasion directe du Japon.
-              </p>
+              <p>C'est dans ce contexte d'enlisement que les recherches sur l'énergie nucléaire prennent un tournant stratégique. Le projet Manhattan, lancé dans le plus grand secret par les États-Unis et leurs alliés britanniques, vise à mettre au point une arme nouvelle, capable de changer le cours de la guerre. Dès 1941, une mobilisation scientifique massive est engagée, face à la crainte que l'Allemagne nazie ne développe elle aussi la bombe atomique. Une unité spéciale de bombardement est créée et une base d'opérations installée sur l'île de Tinian, dans le Pacifique.</p>
               
-              <p>
-                C'est dans ce contexte d'enlisement que les recherches sur l'énergie nucléaire prennent un tournant stratégique. Le projet Manhattan, lancé dans le plus grand secret par les États-Unis et leurs alliés britanniques, vise à mettre au point une arme nouvelle, capable de changer le cours de la guerre. Dès 1941, une mobilisation scientifique massive est engagée, face à la crainte que l'Allemagne nazie ne développe elle aussi la bombe atomique. Une unité spéciale de bombardement est créée et une base d'opérations installée sur l'île de Tinian, dans le Pacifique.
-
-              </p>
+              <p>En juillet 1945, l'Allemagne a capitulé, mais la guerre se prolonge dans le Pacifique. Le Japon refuse de se soumettre aux exigences de la déclaration de Potsdam, dans laquelle les Alliés réclament une reddition sans conditions. Les États-Unis, déterminés à éviter une invasion terrestre catastrophique, se préparent alors à utiliser leur arme secrète.</p>
               
-              <p>
-                En juillet 1945, l'Allemagne a capitulé, mais la guerre se prolonge dans le Pacifique. Le Japon refuse de se soumettre aux exigences de la déclaration de Potsdam, dans laquelle les Alliés réclament une reddition sans conditions. Les États-Unis, déterminés à éviter une invasion terrestre catastrophique, se préparent alors à utiliser leur arme secrète.
-              </p>
-              
-              <blockquote class="article-quote">
-                "Les Japonais étaient prêts à se rendre, et il n’était pas nécessaire de les frapper avec cette chose horrible."
+              <blockquote class="pacific-quote">
+                "Les Japonais étaient prêts à se rendre, et il n'était pas nécessaire de les frapper avec cette chose horrible."
                 <cite>— Dwight D. Eisenhower, général américain et président des États-Unis</cite>
               </blockquote>
             </div>
           </div>
-        </article>
+        </div>
       </section>
       
-      <!-- Section Timeline CORRIGÉE - Alternance texte et images de part et d'autre de la ligne -->
+      <!-- Section Timeline - Chronologie des événements -->
       <section class="step" id="timeline">
         <h2 class="timeline-header">De Pearl Harbor à Hiroshima et Nagasaki</h2>
         <p class="timeline-subtitle">Chronologie des événements majeurs qui ont façonné le conflit du Pacifique</p>
@@ -182,7 +170,7 @@
             </div>
             <div class="timeline-image right">
               <img src="./assets/timeline/PEARLHARBOR.webp" alt="Bombardement de Pearl Harbor">
-              <p class="timeline-caption">L’USS California endommagé après l’attaque japonaise de Pearl Harbor.</p>
+              <p class="timeline-caption">L'USS California endommagé après l'attaque japonaise de Pearl Harbor.</p>
             </div>
           </div>
 
@@ -207,15 +195,15 @@
               <p>Bataille sanglante où les Marines américains s'emparent de cette île stratégique, nécessaire aux B-29 en difficulté pour se poser sur le chemin du retour après avoir bombardé le Japon.</p>
             </div>
             <div class="timeline-image right">
-              <img src="./assets/timeline/IWO.webp" alt="Lever du drapeau à Iwo Jima">
-              <p class="timeline-caption">Des Marines américains sur les plages volcaniques d’Iwo Jima.</p>
+              <img src="./assets/timeline/IWO.webp" alt="Marines à Iwo Jima">
+              <p class="timeline-caption">Des Marines américains sur les plages volcaniques d'Iwo Jima.</p>
             </div>
           </div>
 
           <!-- Événement 4 -->
           <div class="timeline-item">
             <div class="timeline-image left">
-              <img src="./assets/timeline/OKINAWA.webp">
+              <img src="./assets/timeline/OKINAWA.webp" alt="Bataille d'Okinawa">
               <p class="timeline-caption">Assauts amphibies des troupes alliées sur Okinawa.</p>
             </div>
             <div class="timeline-content right">
@@ -238,7 +226,6 @@
             </div>
           </div>
 
-
           <!-- Heure H - Élément final de la frise -->
           <div class="timeline-item center heure-h">
             <div class="timeline-content">
@@ -256,7 +243,7 @@
         </div>
       </section>
       
-      <!-- Section méthodo après la frise -->
+      <!-- Section méthodologie -->
       <section class="step" id="lorem-section">
         <article class="article-container">
           <div class="content-wrapper">
@@ -264,22 +251,18 @@
             <h2 class="article-title">Méthodologie à l'élaboration des cartes</h2>
             
             <div class="article-content">
-              
               <p>
                 Pour réaliser nos cartes, nous avons mené un travail de numérisation à partir de documents cartographiques produits par l'armée américaine pendant la Seconde Guerre mondiale et dans les années qui ont suivi. Ces cartes historiques, qui documentent les destructions causées par les bombardements, montrent l'urbanisation telle qu'elle existait avant les frappes. En contraste, notre fond de carte repose sur une représentation de l'urbanisme actuel, mettant ainsi en lumière les transformations urbaines survenues au cours des 80 dernières années. 
               </p>
               <p>
-                Nous avons donc un fond actuel et une surcouche qui expose les dégâts qu’on pu subir ces deux villes.
+                Nous avons donc un fond actuel et une surcouche qui expose les dégâts qu'on pu subir ces deux villes.
               </p>
-            
-              
-              
             </div>
           </div>
         </article>
       </section>
       
-      <!-- Section Hiroshima avec animations d'apparition et carte interactive -->
+      <!-- Section Hiroshima avec carte interactive -->
       <section class="step" id="hiroshima">
         <div class="sticky-container">
           <article class="text-container sticky-content">
@@ -310,7 +293,7 @@
         </div>
       </section>
       
-      <!-- Section Nagasaki avec animations d'apparition et carte interactive -->
+      <!-- Section Nagasaki avec carte interactive -->
       <section class="step" id="nagasaki">
         <div class="sticky-container">
           <article class="text-container sticky-content">
@@ -341,7 +324,7 @@
         </div>
       </section>
       
-      <!-- Section Infographie interactive - MODIFIÉE -->
+      <!-- Section Infographie interactive -->
       <section class="step" id="infographie-hiroshima">
         <div class="infographie-container">
           <article class="infographie-text">
@@ -382,14 +365,14 @@
           <figure class="infographie-image">
             <div class="infographie-interactive">
               <div id="bomb-display" class="bomb-display">
-                <!-- Le contenu des images de bombes sera remplacé par JS -->
+                <!-- Contenu dynamique géré par JS -->
               </div>
             </div>
           </figure>
         </div>
       </section>
       
-      <!-- Section texte ajoutée après "Données clés" -->
+      <!-- Section texte après "Données clés" -->
       <section class="step" id="post-infographie-section">
         <article class="article-container">
           <div class="content-wrapper">
@@ -411,7 +394,6 @@
               
               <p>
                 Sur la scène internationale, l'entrée dans l'ère atomique a bouleversé durablement les rapports de force. Pendant la Guerre froide, la dissuasion nucléaire s'est imposée comme le cœur des stratégies militaires, façonnant un nouvel équilibre mondial. Aujourd'hui encore, la crainte d'un affrontement atomique continue de peser sur les relations entre grandes puissances.
-
               </p>
               
               <blockquote class="article-quote">
@@ -423,7 +405,7 @@
         </article>
       </section>
 
-      <!-- Nouvelle section "Little Boy sur Rennes" avec carte interactive -->
+      <!-- Section "Little Boy sur Rennes" avec carte interactive -->
       <section class="step" id="rennes-impact">
         <div class="sticky-container">
           <article class="text-container sticky-content">
@@ -453,7 +435,7 @@
         </div>
       </section>
 
-      <!-- Section Conclusion avec image bandeau pleine largeur -->
+      <!-- Section Conclusion -->
       <section class="step" id="conclusion">
         <!-- Bandeau de césure pleine largeur -->
         <div class="full-width-banner">
@@ -474,7 +456,7 @@
               <p>
                 Aujourd'hui, 80 ans après ces événements, ces deux villes se sont reconstruites tout en préservant certains vestiges comme témoignages pour les générations futures. Le Dôme de Genbaku à Hiroshima, resté debout malgré l'explosion, est devenu un symbole international de paix.
               </p>
-              
+
               <p>
                 La mémoire de ces événements continue d'influencer les relations internationales et la diplomatie mondiale. Le Japon, devenu un fervent défenseur du désarmement nucléaire, a fait de cette expérience traumatisante un pilier de son identité nationale. Les cérémonies annuelles de commémoration à Hiroshima et Nagasaki rassemblent des dignitaires du monde entier, rappelant à tous les conséquences dévastatrices de l'utilisation d'armes nucléaires.
               </p>
@@ -550,7 +532,7 @@
             </div>
           </div>
           
-          <!-- BIBLIOGRAPHY SECTION - Collapsible for better UX -->
+          <!-- BIBLIOGRAPHY SECTION -->
           <div class="bibliography-section">
             <button class="bibliography-toggle" onclick="toggleBibliography()">
               <h3>Bibliographie</h3>
@@ -624,6 +606,18 @@
           <div class="footer-copyright">
             <div class="copyright-container">
               <p>© 2025 MASTER SIGAT - Université Rennes 2 en partenariat avec Ouest-France. Tous droits réservés.</p>
+              <p class="additional-credit">
+                <span class="dev-tag">Contributeurs : </span>
+                <span class="dev-names">
+                  <a href="https://www.linkedin.com/in/kevin-lu-cong-sang-2b048529b" target="_blank">KEVIN LU CONG SANG</a> • 
+                  <a href="https://www.linkedin.com/in/romain-guillou-b4489015b" target="_blank">ROMAIN GUILLOUX</a> • 
+                  <a href="https://www.linkedin.com/in/thomas-lemoigne-650036293/" target="_blank">THOMAS LEMOIGNE</a> • 
+                  <a href="https://www.linkedin.com/in/th%C3%A9o-fonta-8b6958208" target="_blank">THEO FONTA</a> • 
+                  <a href="https://www.linkedin.com/in/martin-mainguy-39852a2a7" target="_blank">MARTIN MAINGUY</a> • 
+                  <a href="https://www.linkedin.com/in/aurel-ohier-8816a7330" target="_blank">AUREL OHIER</a>
+                </span>
+              </p>
+            </div>
           </div>
         </article>
       </section>
