@@ -1,9 +1,16 @@
-/* ----- Mise à jour du reset & base ----- */
+/**
+ * style.css - Feuille de style principale
+ * Application de cartographie interactive des bombardements atomiques
+ * Développé par l'équipe M2 SIGAT - Université Rennes 2
+ * LU CONG SANG Kévin.
+ */
+
+/* ----- NORMALISATION & BASE ----- */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif; /* Force Arial sur tous les éléments */
+  font-family: Arial, sans-serif;
 }
 
 :root {
@@ -28,14 +35,9 @@
   --text-white: #FFF;         /* Blanc pour le texte sur fond sombre */
   
   /* Couleurs fonctionnelles */
-  --success: #f39c9e;         /* Vert pour les zones sauvées */
-  --warning: #ea504c;         /* Orange pour les zones endommagées */
+  --success: #f39c9e;         /* Rose pour les zones sauvées */
+  --warning: #ea504c;         /* Rouge clair pour les zones endommagées */
   --danger: #af0d1d;          /* Rouge foncé pour les zones détruites */
-  
-  /* Dimensions */
-  --header-height: 60px;
-  --footer-height: 300px;
-  --sidebar-width: 300px;
   
   /* Z-index layers */
   --z-back: 1;
@@ -50,14 +52,14 @@
   --transition-normal: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-slow: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   
-  /* Shadows */
+  /* Ombres */
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.2);
   --shadow-lg: 0 10px 30px rgba(0,0,0,0.16), 0 6px 10px rgba(0,0,0,0.1);
   --shadow-xl: 0 15px 35px rgba(0,0,0,0.18), 0 10px 25px rgba(0,0,0,0.1);
 }
 
-/* Applique Arial sur le body et html */
+/* Application des styles de base */
 html, body {
   width: 100%;
   height: 100%;
@@ -75,7 +77,7 @@ body {
   position: relative;
 }
 
-/* Met à jour les définitions des titres sans spécifier la police */
+/* Typographie de base */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
@@ -99,7 +101,7 @@ p {
   line-height: 1.6;
 }
 
-/* ----- Liens ----- */
+/* ----- LIENS ----- */
 a {
   color: var(--primary);
   text-decoration: underline;
@@ -121,7 +123,7 @@ a:hover {
   color: var(--primary);
 }
 
-/* ----- Loader ----- */
+/* ----- LOADER ----- */
 #loading-indicator {
   position: fixed;
   top: 0;
@@ -163,7 +165,7 @@ a:hover {
   to { transform: rotate(360deg); }
 }
 
-/* ----- Global Progress Bar ----- */
+/* ----- BARRE DE PROGRESSION GLOBALE ----- */
 #progress-container {
   position: fixed;
   top: 0;
@@ -195,7 +197,7 @@ a:hover {
   box-shadow: 0 0 8px rgba(175, 13, 29, 0.8);
 }
 
-/* ----- Map Container ----- */
+/* ----- CONTENEUR DE CARTE ----- */
 #map-container {
   position: fixed;
   top: 0;
@@ -225,7 +227,7 @@ a:hover {
   z-index: 1;
 }
 
-/* ----- Scroll Container ----- */
+/* ----- CONTENEUR DE DÉFILEMENT ----- */
 #scroll-container {
   position: absolute;
   top: 0;
@@ -257,7 +259,7 @@ a:hover {
   display: block;
 }
 
-/* ----- Section Badge ----- */
+/* ----- BADGE DE SECTION ----- */
 .section-badge {
   display: inline-block;
   background: var(--primary);
@@ -276,7 +278,7 @@ a:hover {
   transform: translateY(-3px);
 }
 
-/* ----- Intro Section ----- */
+/* ----- SECTION INTRO ----- */
 .intro-background {
   background: var(--secondary);
   width: 100%;
@@ -439,63 +441,54 @@ a:hover {
   }
 }
 
-/* Styles pour la nouvelle section de la carte du Pacifique */
-#pacific-map {
-  position: relative;
+/* ----- SECTION PACIFIC COMBINED ----- */
+.pacific-combined {
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-#pacific-map .full-width-banner {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-#pacific-map .full-width-banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-#pacific-map .image-credit {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 8px 15px;
-  font-size: 14px;
-  border-radius: 4px;
-  font-weight: 500;
-  box-shadow: var(--shadow-md);
-}
-
-/* Styles pour la section de contexte du Pacifique */
-#pacific-context {
-  background: white;
-  color: var(--text);
   min-height: 100vh;
-  padding: 80px 0;
+  display: flex;
+  align-items: center;
+  background-color: #F6F6F6;
 }
 
-#pacific-context .article-container {
-  max-width: 800px;
+.pacific-container {
+  display: flex;
+  width: 100%;
+  min-height: 90vh;
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
+  max-width: 1800px;
+}
+
+/* Partie carte */
+.pacific-map-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  overflow: hidden;
   padding: 0;
-  font-family: Arial, sans-serif;
-  text-align: center;
 }
 
-#pacific-context .content-wrapper {
-  padding: 0 20px;
-  text-align: center;
+.pacific-map-side img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
-#pacific-context .section-badge {
+/* Partie texte */
+.pacific-text-side {
+  flex: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  overflow-y: auto;
+}
+
+.pacific-badge {
   display: inline-block;
   background: #AF0D1D;
   color: white;
@@ -503,41 +496,31 @@ a:hover {
   font-size: 14px;
   padding: 6px 12px;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   text-transform: uppercase;
 }
 
-#pacific-context .article-title {
+.pacific-title {
   font-size: 32px;
   font-weight: 700;
-  margin-bottom: 24px;
-  color: #1A1A1A;
+  margin-bottom: 30px;
   line-height: 1.2;
-  text-align: center;
-}
-
-#pacific-context .article-content {
-  color: #333;
-  line-height: 1.6;
-  max-width: 650px;
-  margin: 0 auto;
-}
-
-/* Texte justifié */
-#pacific-context .article-content p {
-  text-align: justify;
-  hyphens: auto;
-}
-
-#pacific-context .lead-paragraph {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 20px;
   color: #1A1A1A;
 }
 
-#pacific-context .article-quote {
-  margin: 30px auto;
+.pacific-content {
+  color: #333;
+}
+
+.pacific-content p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  text-align: justify;
+  font-size: 16px;
+}
+
+.pacific-quote {
+  margin: 30px 0;
   padding: 20px 30px;
   font-style: italic;
   font-size: 20px;
@@ -546,11 +529,10 @@ a:hover {
   background: #F6F6F6;
   position: relative;
   color: #333;
-  max-width: 550px;
   text-align: center;
 }
 
-#pacific-context .article-quote::before {
+.pacific-quote::before {
   content: '"';
   position: absolute;
   top: 0;
@@ -561,19 +543,18 @@ a:hover {
   line-height: 1;
 }
 
-#pacific-context .article-quote cite {
+.pacific-quote cite {
   display: block;
   margin-top: 10px;
   font-size: 16px;
 }
 
-/* ----- Timeline Section Améliorée avec Images de chaque côté ----- */
+/* ----- TIMELINE SECTION ----- */
 #timeline {
   background-color: var(--background-alt);
   padding: 80px 0 120px;
   position: relative;
   overflow: hidden;
-  font-family: Arial, sans-serif;
 }
 
 .timeline-header {
@@ -585,7 +566,6 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
-  font-family: Arial, sans-serif;
 }
 
 .timeline-subtitle {
@@ -594,10 +574,9 @@ a:hover {
   font-size: 1.1rem;
   max-width: 700px;
   margin: 0 auto 60px;
-  font-family: Arial, sans-serif;
 }
 
-/* Container global de la timeline - Organisation optimisée */
+/* Container global de la timeline */
 .timeline {
   position: relative;
   margin: 0 auto;
@@ -606,7 +585,7 @@ a:hover {
   max-width: 1200px;
 }
 
-/* Ligne verticale centrale - Améliorée */
+/* Ligne verticale centrale */
 .timeline::before {
   content: '';
   position: absolute;
@@ -619,13 +598,13 @@ a:hover {
     var(--primary),
     var(--primary-light),
     var(--primary));
-  transform: translateX(-50%); /* Assure un centrage exact */
+  transform: translateX(-50%);
   z-index: 0;
   border-radius: 3px;
   box-shadow: var(--shadow-md);
 }
 
-/* Style de chaque élément (bloc événement) - Optimisé avec images */
+/* Style de chaque élément (bloc événement) */
 .timeline-item {
   position: relative;
   width: 100%;
@@ -696,7 +675,7 @@ a:hover {
   font-style: italic;
 }
 
-/* Bandeau coloré sur le côté - Optimisé */
+/* Bandeau coloré sur le côté */
 .timeline-content::after {
   content: '';
   position: absolute;
@@ -714,38 +693,13 @@ a:hover {
   left: 0;
 }
 
-/* Animation au scroll - Plus fluide */
+/* Animation au scroll */
 .timeline-item.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Style pour les images doubles de l'événement final */
-.timeline-dual-image {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 30px;
-  width: 90%;
-}
-
-.timeline-image-left, .timeline-image-right {
-  width: 48%;
-}
-
-.timeline-image-left img, .timeline-image-right img {
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease;
-  border: 3px solid white;
-}
-
-.timeline-image-left img:hover, .timeline-image-right img:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Élément central final - Optimisé */
+/* Élément central final */
 .timeline-item.center {
   width: 80%;
   margin-left: 10%;
@@ -769,7 +723,7 @@ a:hover {
   display: none;
 }
 
-/* Titres - Optimisés */
+/* Titres */
 .timeline-title {
   font-size: 1.3rem;
   margin: 0 0 12px;
@@ -777,7 +731,6 @@ a:hover {
   font-weight: 700;
   position: relative;
   padding-bottom: 10px;
-  font-family: Arial, sans-serif;
 }
 
 .timeline-title::after {
@@ -803,7 +756,7 @@ a:hover {
   width: 50px;
 }
 
-/* Mise en forme de la date - Optimisée */
+/* Mise en forme de la date */
 .timeline-date {
   display: inline-block;
   font-weight: bold;
@@ -815,7 +768,6 @@ a:hover {
   border-radius: 30px;
   letter-spacing: 0.5px;
   box-shadow: var(--shadow-sm);
-  font-family: Arial, sans-serif;
 }
 
 .timeline-item.center .timeline-date {
@@ -829,10 +781,9 @@ a:hover {
   line-height: 1.6;
   color: var(--text);
   font-size: 1rem;
-  font-family: Arial, sans-serif;
 }
 
-/* Points sur la ligne - Optimisés */
+/* Points sur la ligne */
 .timeline-item::after {
   content: '';
   position: absolute;
@@ -849,7 +800,7 @@ a:hover {
   transform: translateX(-50%);
 }
 
-/* Animation de pulsation - Optimisée */
+/* Animation de pulsation */
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(175, 13, 29, 0.7);
@@ -875,7 +826,7 @@ a:hover {
   border: 4px solid white;
 }
 
-/* Horloge pour "Heure H" - Optimisée */
+/* Horloge pour "Heure H" */
 .timeline-clock {
   display: flex;
   justify-content: center;
@@ -914,40 +865,28 @@ a:hover {
   transform: translate(-50%, -50%);
 }
 
-/* Styles pour la section lorem-section */
-#lorem-section {
+/* ----- SECTIONS D'ARTICLES ----- */
+#lorem-section,
+#post-infographie-section {
   background: white;
   color: var(--text);
   min-height: 60vh;
   padding: 80px 0;
 }
 
-#lorem-section .article-container {
+.article-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 0;
-  font-family: Arial, sans-serif;
   text-align: center;
 }
 
-#lorem-section .content-wrapper {
+.content-wrapper {
   padding: 0 20px;
   text-align: center;
 }
 
-#lorem-section .section-badge {
-  display: inline-block;
-  background: #AF0D1D;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-}
-
-#lorem-section .article-title {
+.article-title {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 24px;
@@ -956,7 +895,7 @@ a:hover {
   text-align: center;
 }
 
-#lorem-section .article-content {
+.article-content {
   color: #333;
   line-height: 1.6;
   max-width: 650px;
@@ -964,19 +903,19 @@ a:hover {
 }
 
 /* Texte justifié */
-#lorem-section .article-content p {
+.article-content p {
   text-align: justify;
   hyphens: auto;
 }
 
-#lorem-section .lead-paragraph {
+.lead-paragraph {
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 20px;
   color: #1A1A1A;
 }
 
-#lorem-section .article-quote {
+.article-quote {
   margin: 30px auto;
   padding: 20px 30px;
   font-style: italic;
@@ -990,7 +929,7 @@ a:hover {
   text-align: center;
 }
 
-#lorem-section .article-quote::before {
+.article-quote::before {
   content: '"';
   position: absolute;
   top: 0;
@@ -1001,106 +940,13 @@ a:hover {
   line-height: 1;
 }
 
-#lorem-section .article-quote cite {
+.article-quote cite {
   display: block;
   margin-top: 10px;
   font-size: 16px;
 }
 
-/* Styles pour la section post-infographie */
-#post-infographie-section {
-  background: white;
-  color: var(--text);
-  min-height: 100vh;
-  padding: 80px 0;
-}
-
-#post-infographie-section .article-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
-
-#post-infographie-section .content-wrapper {
-  padding: 0 20px;
-  text-align: center;
-}
-
-#post-infographie-section .section-badge {
-  display: inline-block;
-  background: #AF0D1D;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-}
-
-#post-infographie-section .article-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: #1A1A1A;
-  line-height: 1.2;
-  text-align: center;
-}
-
-#post-infographie-section .article-content {
-  color: #333;
-  line-height: 1.6;
-  max-width: 650px;
-  margin: 0 auto;
-}
-
-/* Texte justifié */
-#post-infographie-section .article-content p {
-  text-align: justify;
-  hyphens: auto;
-}
-
-#post-infographie-section .lead-paragraph {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 20px;
-  color: #1A1A1A;
-}
-
-#post-infographie-section .article-quote {
-  margin: 30px auto;
-  padding: 20px 30px;
-  font-style: italic;
-  font-size: 20px;
-  border-left: 4px solid #AF0D1D;
-  border-right: 4px solid #AF0D1D;
-  background: #F6F6F6;
-  position: relative;
-  color: #333;
-  max-width: 550px;
-  text-align: center;
-}
-
-#post-infographie-section .article-quote::before {
-  content: '"';
-  position: absolute;
-  top: 0;
-  left: 10px;
-  font-size: 60px;
-  color: #AF0D1D;
-  opacity: 0.2;
-  line-height: 1;
-}
-
-#post-infographie-section .article-quote cite {
-  display: block;
-  margin-top: 10px;
-  font-size: 16px;
-}
-
-/* ----- Sticky Container (Hiroshima, Nagasaki et Rennes) ----- */
+/* ----- CONTENEURS STICKY (HIROSHIMA, NAGASAKI, RENNES) ----- */
 .sticky-container {
   position: sticky;
   top: 0;
@@ -1128,7 +974,7 @@ a:hover {
   box-shadow: var(--shadow-xl);
 }
 
-/* ----- Text Container & Content ----- */
+/* ----- CONTENEUR DE TEXTE & CONTENU ----- */
 .text-container {
   background: white;
   color: var(--text);
@@ -1156,7 +1002,7 @@ a:hover {
 
 /* Ajoute les deux-points avec espaces insécables après les balises strong */
 .impact-legend li strong::after {
-  content: "\00A0:\00A0"; /* Espace insécable + deux-points + espace insécable */
+  content: "\00A0:\00A0";
 }
 
 /* Empêche le retour à la ligne dans les éléments de légende */
@@ -1177,7 +1023,7 @@ a:hover {
 .impact-legend .impact-dot {
   flex-shrink: 0;
   margin-right: 10px;
-  margin-top: 4px; /* Ajuste l'alignement vertical du point */
+  margin-top: 4px;
 }
 
 .impact-dot {
@@ -1197,12 +1043,8 @@ a:hover {
   background: var(--warning);
 }
 
-.impact-dot.spared, .impact-dot.radiation {
+.impact-dot.spared {
   background: var(--success);
-}
-
-.impact-dot.radiation {
-  background: var(--radiation);
 }
 
 /* Conteneur de statistiques */
@@ -1238,36 +1080,14 @@ a:hover {
   color: var(--text-light);
 }
 
-/* Prompt d'exploration suite */
-.explore-prompt {
-  background: var(--secondary-light);
-  color: white;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  animation: glow 3s infinite alternate;
-}
-
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 5px rgba(175, 13, 29, 0.3);
-  }
-  100% {
-    box-shadow: 0 0 15px rgba(175, 13, 29, 0.6);
-  }
-}
-
-/* ----- Sections Hiroshima, Nagasaki et Rennes Impact ----- */
+/* ----- SECTIONS HIROSHIMA, NAGASAKI ET RENNES IMPACT ----- */
 #hiroshima,
 #nagasaki,
 #rennes-impact {
   min-height: 200vh;
 }
 
-/* ----- Infographie Section ----- */
+/* ----- SECTION INFOGRAPHIE ----- */
 #infographie-hiroshima {
   background: var(--background);
   display: flex;
@@ -1369,7 +1189,7 @@ a:hover {
   color: var(--secondary);
 }
 
-/* Partie interactive de l'infographie - SIMPLIFIÉE */
+/* Partie interactive de l'infographie */
 .infographie-image {
   flex: 0 0 60%;
 }
@@ -1446,7 +1266,7 @@ a:hover {
   animation: fadeInScale 0.5s ease forwards;
 }
 
-/* ----- Conclusion Section ----- */
+/* ----- SECTION CONCLUSION ----- */
 #conclusion {
   background: white;
   color: var(--text);
@@ -1484,168 +1304,7 @@ a:hover {
   border-radius: 4px;
 }
 
-/* Ajuster le style du conteneur d'article pour qu'il commence après l'image */
-#conclusion .article-container {
-  max-width: 800px;
-  margin: 40px auto 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
-
-#conclusion .content-wrapper {
-  padding: 0 20px;
-  text-align: center;
-}
-
-#conclusion .section-badge {
-  display: inline-block;
-  background: #AF0D1D;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-}
-
-#conclusion .article-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: #1A1A1A;
-  line-height: 1.2;
-  text-align: center;
-}
-
-#conclusion .article-content {
-  color: #333;
-  line-height: 1.6;
-  max-width: 650px;
-  margin: 0 auto;
-}
-
-/* Texte justifié */
-#conclusion .article-content p {
-  text-align: justify;
-  hyphens: auto;
-}
-
-#conclusion .lead-paragraph {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 20px;
-  color: #1A1A1A;
-}
-
-#conclusion .article-quote {
-  margin: 30px auto;
-  padding: 20px 30px;
-  font-style: italic;
-  font-size: 20px;
-  border-left: 4px solid #AF0D1D;
-  border-right: 4px solid #AF0D1D;
-  background: #F6F6F6;
-  position: relative;
-  color: #333;
-  max-width: 550px;
-  text-align: center;
-}
-
-#conclusion .article-quote::before {
-  content: '"';
-  position: absolute;
-  top: 0;
-  left: 10px;
-  font-size: 60px;
-  color: #AF0D1D;
-  opacity: 0.2;
-  line-height: 1;
-}
-
-#conclusion .article-quote cite {
-  display: block;
-  margin-top: 10px;
-  font-size: 16px;
-}
-
-/* ----- Footer Section ----- */
-#footer {
-  background: var(--secondary);
-  color: white;
-  padding: 60px 0;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-.footer-logo {
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-/* Ajout d'un style pour le texte à la place du logo */
-.footer-logo h3 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: var(--primary);
-  letter-spacing: 1px;
-}
-
-.footer-info {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-bottom: 40px;
-}
-
-.footer-section {
-  flex: 1;
-  min-width: 200px;
-}
-
-.footer-section h3 {
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-  color: var(--primary);
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.footer-section h3::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 40px;
-  height: 3px;
-  background-color: var(--primary);
-}
-
-.footer-section p {
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-  color: #ccc;
-}
-
-.copyright-info {
-  text-align: center;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.copyright-info p {
-  font-size: 0.8rem;
-  color: #999;
-}
-
-/* ----- Legend ----- */
+/* ----- LÉGENDE FIXES ----- */
 #fixed-legend {
   position: fixed !important;
   top: 20px !important;
@@ -1721,566 +1380,10 @@ a:hover {
   color: var(--text);
 }
 
-/* ----- Responsive Design ----- */
-@media (max-width: 1200px) {
-  .intro-title {
-    font-size: 4rem;
-  }
-  
-  .intro-content {
-    width: 90%;
-    padding: 40px;
-  }
-  
-  .infographie-container {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .infographie-text,
-  .infographie-image {
-    flex: 0 0 100%;
-    max-width: 700px;
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  
-  .sticky-container {
-    justify-content: center;
-    padding-right: 0;
-  }
-  
-  .sticky-content {
-    max-width: 90%;
-  }
-  
-  #conclusion .article-container {
-    max-width: 90%;
-  }
-  
-  .columns-container {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  /* Responsive pour la timeline */
-  .timeline-item {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .timeline-content, .timeline-image {
-    width: 80%;
-    margin: 0 0 20px 0 !important;
-    text-align: center !important;
-  }
-  
-  .timeline-content.left .timeline-title::after,
-  .timeline-content.right .timeline-title::after {
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
-  }
-}
-
-@media (max-width: 900px) {
-  h1 {
-    font-size: 2.8rem;
-  }
-  
-  h2 {
-    font-size: 2rem;
-  }
-  
-  .intro-title {
-    font-size: 3.2rem;
-  }
-  
-  .intro-badge {
-    font-size: 1rem;
-    top: -20px;
-    left: -15px;
-  }
-  
-  .intro-content {
-    padding: 30px;
-  }
-  
-  #fixed-legend {
-    left: 10px;
-    bottom: 10px;
-    top: auto;
-  }
-  
-  .fixed-legend-content {
-    max-width: calc(100vw - 20px);
-  }
-  
-  .infographie-interactive {
-    height: auto;
-    padding: 20px;
-  }
-  
-  .bomb-display {
-    height: auto;
-    margin-bottom: 40px;
-  }
-  
-  .footer-info {
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .full-width-banner {
-    height: 300px;
-  }
-  
-  #conclusion .article-title {
-    font-size: 24px;
-  }
-  
-  #conclusion .lead-paragraph {
-    font-size: 16px;
-  }
-  
-  #conclusion .article-quote {
-    font-size: 18px;
-    padding: 15px 20px;
-  }
-  
-  .content-container {
-    padding: 0 15px;
-  }
-  
-  #lorem-section .article-title,
-  #post-infographie-section .article-title,
-  #pacific-context .article-title {
-    font-size: 24px;
-  }
-  
-  #lorem-section .lead-paragraph,
-  #post-infographie-section .lead-paragraph,
-  #pacific-context .lead-paragraph {
-    font-size: 16px;
-  }
-  
-  #lorem-section .article-quote,
-  #post-infographie-section .article-quote,
-  #pacific-context .article-quote {
-    font-size: 18px;
-    padding: 15px 20px;
-  }
-}
-  
-.section-title {
-  font-size: 2rem;
-}
-
-@media (max-width: 600px) {
-  body {
-    cursor: auto;
-  }
-  
-  .intro-title {
-    font-size: 2.5rem;
-  }
-  
-  .intro-line-highlight {
-    font-size: 120%;
-  }
-  
-  .intro-meta {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .timeline::before {
-    left: 20px;
-  }
-  
-  /* Adaptation responsive pour la timeline */
-  .timeline {
-    width: 95%;
-  }
-  
-  .timeline-item {
-    width: 100%;
-    padding-left: 50px;
-    padding-right: 15px;
-    left: 0 !important;
-    text-align: left !important;
-    margin-bottom: 40px;
-  }
-  
-  .timeline-content, .timeline-image {
-    width: 100% !important;
-  }
-  
-  .timeline-item::after {
-    left: 12px;
-    right: auto;
-  }
-  
-  .timeline-content.left::after,
-  .timeline-content.right::after {
-    left: 0;
-    right: auto;
-  }
-  
-  .timeline-dual-image {
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .timeline-image-left, .timeline-image-right {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  
-  .sticky-content {
-    max-width: 100%;
-    margin: 10px;
-    padding: 20px;
-  }
-  
-  .stat-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .tab-btn {
-    padding: 10px;
-    font-size: 0.9rem;
-  }
-  
-  .full-width-banner {
-    height: 200px;
-  }
-  
-  #conclusion .article-quote {
-    padding: 15px;
-    font-size: 16px;
-  }
-  
-  #progress-container {
-    height: 4px;
-  }
-  
-  /* Rendre les légendes adaptées au mobile */
-  #fixed-legend {
-    width: calc(100% - 20px);
-    text-align: center;
-  }
-  
-  .fixed-legend-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .toggle-btn {
-    margin: 5px;
-  }
-  
-  .lead-paragraph {
-    font-size: 1.1rem;
-  }
-  
-  .clock-face {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .clock-hand {
-    width: 25px;
-  }
-
-  /* Ajustements pour la section de la carte du Pacifique sur mobile */
-  #pacific-map .full-width-banner {
-    height: 50vh !important;
-  }
-  
-  #pacific-map .image-credit {
-    font-size: 12px;
-    padding: 5px 10px;
-    bottom: 10px;
-    right: 10px;
-  }
-}
-
-/* ----- Animation d'apparition générale ----- */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ----- Correction pour le menu de navigation et les liens ----- */
-.maplibregl-ctrl a {
-  color: transparent !important;
-  text-decoration: none !important;
-}
-
-.maplibregl-ctrl-attrib-inner a {
-  color: #333 !important;
-}
-
-/* ----- Correction pour la légende ----- */
-.toggle-btn {
-  cursor: pointer !important;
-  user-select: none !important;
-}
-
-.toggle-btn.active {
-  opacity: 1 !important;
-}
-
-.toggle-btn.inactive {
-  opacity: 0.5 !important;
-}
-
-/* ----- Modification pour permettre le scroll sur mobile ----- */
-@media (max-width: 768px) {
-  html, body {
-    overflow: auto !important; /* Réactiver le scroll natif sur mobile */
-    height: auto !important;   /* Permettre au contenu de définir la hauteur */
-    position: static !important; /* Éviter les problèmes de positionnement fixe */
-  }
-  
-  #scroll-container {
-    position: static !important; /* Pas de position absolue sur mobile */
-    height: auto !important;     /* Hauteur basée sur le contenu */
-    overflow: visible !important; /* Montrer tout le contenu */
-  }
-  
-  .step {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    display: block;
-  }
-  
-  .sticky-container {
-    position: relative !important; /* Pas de position sticky sur mobile */
-    height: auto !important;
-    top: auto !important;
-  }
-  
-  #map-container {
-    position: relative !important; /* La carte devient un élément normal du flux */
-    height: 50vh !important;       /* Hauteur fixe pour la carte */
-    margin-bottom: 20px !important;
-  }
-  
-  /* Ajuster la légende pour qu'elle soit visible sur la carte mobile */
-  #fixed-legend {
-    position: absolute !important;
-    top: 10px !important;
-    left: 10px !important;
-    z-index: 1000 !important;
-  }
-  
-  .full-width-banner {
-    height: 200px !important;
-  }
-}
-
-/* Style pour la section des logos */
-.footer-logos {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  margin-top: 20px;
-}
-
-.footer-logo-img {
-  height: 60px; /* Logo plus grand */
-  width: auto;
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
-}
-
-/* Style spécifique pour le logo SIGAT */
-.footer-logos img[src*="Logo_sigat.svg"] {
-  filter: brightness(0) invert(1); /* Convertit le logo noir en blanc */
-  height: 80px; /* Logo SIGAT encore plus grand */
-}
-
-.footer-logo-img:hover {
-  opacity: 1;
-}
-
-/* Responsive design pour les logos */
-@media (max-width: 768px) {
-  .footer-logos {
-    flex-direction: column;
-    gap: 15px;
-  }
-}
-
-/* Styles pour l'infographie des bombes - Version simplifiée */
-
-/* Augmenter la hauteur de la section interactive pour qu'elle soit plus en accord avec la hauteur du texte */
-.infographie-interactive {
-  height: 600px !important; /* Augmenté pour s'adapter au contenu du texte */
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Style pour le conteneur principal des bombes */
-.bomb-display {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-/* Style pour le conteneur de chaque bombe */
-.bomb-container {
-  position: relative;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Agrandir les images des bombes */
-.bomb-container img {
-  max-height: 450px; /* Augmenté pour plus de visibilité */
-  width: auto;
-  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.bomb-container img:hover {
-  transform: translateY(-5px);
-  filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
-}
-
-/* Style pour le titre sous les bombes */
-.bomb-title {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  width: 100%;
-  padding: 10px 15px;
-  text-align: center;
-  border-radius: 4px;
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.bomb-name {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.bomb-power {
-  color: #ff4d4d;
-  font-size: 1.3rem;
-  font-weight: bold;
-}
-
-/* Style pour la comparaison des bombes */
-.bombs-comparison {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-/* Animation pour l'apparition des bombes */
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-bomb {
-  animation: fadeInScale 0.5s ease forwards;
-}
-
-/* Ajustements responsive */
-@media (max-width: 1200px) {
-  .bombs-comparison {
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .bomb-container {
-    width: 100%;
-  }
-  
-  .bomb-container img {
-    max-height: 300px;
-  }
-}
-
-@media (max-width: 768px) {
-  .infographie-interactive {
-    height: auto !important;
-    min-height: 500px;
-  }
-  
-  .bomb-container img {
-    max-height: 250px;
-  }
-  
-  .bomb-name {
-    font-size: 1.2rem;
-  }
-  
-  .bomb-power {
-    font-size: 1rem;
-  }
-}
-
-.pacific-map-special {
-  min-height: auto !important;
-  height: auto !important;  /* Garder la hauteur de la section */
-  overflow: hidden !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f0f0f0;  /* Couleur de fond pour les bordures */
-}
-
-.pacific-map-special img {
-  max-width: 60% !important;  /* Réduire la largeur à 80% */
-  height: auto !important;
-  object-fit: contain !important;
-  display: block !important;
-  margin: 0 auto !important;
-}
-
-
-
-/*-------------*/
-
-/* FOOTER PROFESSIONNEL OUEST-FRANCE */
+/* ----- FOOTER ----- */
 #footer {
   background: #292929;
   color: #e0e0e0;
-  font-family: Arial, sans-serif;
   padding: 60px 0;
 }
 
@@ -2325,9 +1428,8 @@ a:hover {
   margin: 0;
 }
 
-
 .footer-logo-img[src*="sigat"] {
-  height: 80px !important;  /* Plus grand que les 50px par défaut */
+  height: 80px !important;
 }
 
 /* MAIN CONTENT - GRID */
@@ -2365,17 +1467,6 @@ a:hover {
 
 .footer-column li {
   margin-bottom: 10px;
-}
-
-.source-link {
-  color: #ffffff !important;  /* Blanc au lieu de bleu */
-  text-decoration: underline !important;
-  transition: all 0.3s ease;
-}
-
-.source-link:hover {
-  color: #E2001A !important;  /* Rouge au survol */
-  text-decoration: underline !important;
 }
 
 /* BIBLIOGRAPHY SECTION */
@@ -2481,7 +1572,7 @@ a:hover {
   text-align: center;
 }
 
-/* ANIMATIONS */
+/* Animation pour la bibliographie */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -2493,10 +1584,281 @@ a:hover {
   }
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.bibliography-content.closing {
+  animation: slideUp 0.5s ease forwards;
+}
+
+/* Style pour la ligne avec séparateurs */
+.additional-credit {
+  margin-top: 8px;
+  font-size: 0.85em;
+  text-align: center;
+  position: relative;
+  padding-top: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.additional-credit:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.dev-tag {
+  color: rgba(255, 255, 255, 0.5);
+  margin-right: 5px;
+}
+
+.dev-names a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.dev-names a:hover {
+  color: #fff;
+  text-shadow: 0 0 5px rgba(175, 13, 29, 0.5);
+}
+
+/* ----- ANIMATIONS GÉNÉRALES ----- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----- STYLES POUR LES INFOGRAPHIES DE BOMBES ----- */
+.infographie-interactive {
+  height: 600px !important;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bomb-container {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bomb-container img {
+  max-height: 450px;
+  width: auto;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.bomb-container img:hover {
+  transform: translateY(-5px);
+  filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
+}
+
+.bomb-title {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  width: 100%;
+  padding: 10px 15px;
+  text-align: center;
+  border-radius: 4px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bomb-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Comparaison des bombes */
+.bombs-comparison {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* ----- RESPONSIVE DESIGN ----- */
+@media (max-width: 1200px) {
+  .intro-title {
+    font-size: 4rem;
+  }
+  
+  .intro-content {
+    width: 90%;
+    padding: 40px;
+  }
+  
+  .infographie-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .infographie-text,
+  .infographie-image {
+    flex: 0 0 100%;
+    max-width: 700px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  
+  .sticky-container {
+    justify-content: center;
+    padding-right: 0;
+  }
+  
+  .sticky-content {
+    max-width: 90%;
+  }
+  
+  #conclusion .article-container {
+    max-width: 90%;
+  }
+  
+  /* Responsive pour la timeline */
+  .timeline-item {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .timeline-content, .timeline-image {
+    width: 80%;
+    margin: 0 0 20px 0 !important;
+    text-align: center !important;
+  }
+  
+  .timeline-content.left .timeline-title::after,
+  .timeline-content.right .timeline-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+  
+  /* Responsive pour la section Pacific */
+  .pacific-container {
+    flex-direction: column;
+  }
+  
+  .pacific-map-side, .pacific-text-side {
+    flex: none;
+    width: 100%;
+  }
+  
+  .pacific-map-side {
+    height: 50vh;
+  }
+  
+  .pacific-text-side {
+    padding: 30px;
+  }
+  
+  /* Responsive pour les bombes */
+  .bombs-comparison {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .bomb-container {
+    width: 100%;
+  }
+  
+  .bomb-container img {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 900px) {
+  h1 {
+    font-size: 2.8rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  .intro-title {
+    font-size: 3.2rem;
+  }
+  
+  .intro-badge {
+    font-size: 1rem;
+    top: -20px;
+    left: -15px;
+  }
+  
+  .intro-content {
+    padding: 30px;
+  }
+  
+  #fixed-legend {
+    left: 10px;
+    bottom: 10px;
+    top: auto;
+  }
+  
+  .fixed-legend-content {
+    max-width: calc(100vw - 20px);
+  }
+  
+  .infographie-interactive {
+    height: auto;
+    padding: 20px;
+  }
+  
+  .bomb-display {
+    height: auto;
+    margin-bottom: 40px;
+  }
+  
   .footer-main {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .full-width-banner {
+    height: 300px;
+  }
+  
+  .article-title {
+    font-size: 24px;
+  }
+  
+  .lead-paragraph {
+    font-size: 16px;
+  }
+  
+  .article-quote {
+    font-size: 18px;
+    padding: 15px 20px;
+  }
+  
+  .content-container {
+    padding: 0 15px;
   }
 }
 
@@ -2518,20 +1880,171 @@ a:hover {
   .bibliography-grid {
     grid-template-columns: 1fr;
   }
+  
+  /* Ajustement pour l'affichage mobile */
+  html, body {
+    overflow: auto !important;
+    height: auto !important;
+    position: static !important;
+  }
+  
+  #scroll-container {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  
+  .sticky-container {
+    position: relative !important;
+    height: auto !important;
+    top: auto !important;
+  }
+  
+  #map-container {
+    position: relative !important;
+    height: 50vh !important;
+    margin-bottom: 20px !important;
+  }
+  
+  #fixed-legend {
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    z-index: 1000 !important;
+  }
 }
 
-/* Ajoutez cette nouvelle animation pour la fermeture */
-@keyframes slideUp {
-  from {
-    opacity: 1;
-    transform: translateY(0);
+@media (max-width: 600px) {
+  body {
+    cursor: auto;
   }
-  to {
-    opacity: 0;
-    transform: translateY(-20px);
+  
+  .intro-title {
+    font-size: 2.5rem;
   }
-}
-
-.bibliography-content.closing {
-  animation: slideUp 0.5s ease forwards;
+  
+  .intro-line-highlight {
+    font-size: 120%;
+  }
+  
+  .intro-meta {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .timeline::before {
+    left: 20px;
+  }
+  
+  /* Adaptation responsive pour la timeline */
+  .timeline {
+    width: 95%;
+  }
+  
+  .timeline-item {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 15px;
+    left: 0 !important;
+    text-align: left !important;
+    margin-bottom: 40px;
+  }
+  
+  .timeline-content, .timeline-image {
+    width: 100% !important;
+  }
+  
+  .timeline-item::after {
+    left: 12px;
+    right: auto;
+  }
+  
+  .timeline-content.left::after,
+  .timeline-content.right::after {
+    left: 0;
+    right: auto;
+  }
+  
+  .sticky-content {
+    max-width: 100%;
+    margin: 10px;
+    padding: 20px;
+  }
+  
+  .stat-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .tab-btn {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .full-width-banner {
+    height: 200px;
+  }
+  
+  #conclusion .article-quote {
+    padding: 15px;
+    font-size: 16px;
+  }
+  
+  #progress-container {
+    height: 4px;
+  }
+  
+  /* Rendre les légendes adaptées au mobile */
+  #fixed-legend {
+    width: calc(100% - 20px);
+    text-align: center;
+  }
+  
+  .fixed-legend-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .toggle-btn {
+    margin: 5px;
+  }
+  
+  .lead-paragraph {
+    font-size: 1.1rem;
+  }
+  
+  .clock-face {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .clock-hand {
+    width: 25px;
+  }
+  
+  /* Ajustements pour les liens dans le footer */
+  .additional-credit {
+    font-size: 0.75em;
+  }
+  
+  .dev-names {
+    display: block;
+    margin-top: 5px;
+  }
+  
+  /* Ajustements pour les bombes */
+  .infographie-interactive {
+    height: auto !important;
+    min-height: 500px;
+  }
+  
+  .bomb-container img {
+    max-height: 250px;
+  }
+  
+  .bomb-name {
+    font-size: 1.2rem;
+  }
 }
