@@ -1,17 +1,32 @@
-// -----------------------------------------
-// Ajout de la section Rennes et support pour la timeline avec images
-// -----------------------------------------
+/**
+ * script.js - Application de cartographie interactive des bombardements atomiques
+ * Développé par l'équipe M2 SIGAT - Université Rennes 2
+ * 
+ * Ce script gère l'affichage interactif des cartes et le scrollytelling 
+ * permettant de visualiser les impacts des bombardements atomiques
+ * d'Hiroshima et Nagasaki, ainsi qu'une simulation sur Rennes.
+ * 
+ * LU CONG SANG Kévin.
+ */
 
-// Fonction utilitaire pour détecter les appareils mobiles
+// ======= UTILITAIRES ET DÉTECTION D'ENVIRONNEMENT =======
+
+/**
+ * Détecte si l'utilisateur est sur un appareil mobile
+ * @returns {boolean} - true si la largeur d'écran est ≤ 768px
+ */
 function isMobile() {
   return window.innerWidth <= 768;
 }
 
-// Garder une trace de la dernière largeur de fenêtre
+// Variable pour suivre la dernière largeur de fenêtre
 let lastWidth = window.innerWidth;
 
-// ======= PERFORMANCE UTILITIES =======
-// Optimise les appels de callback en utilisant requestAnimationFrame
+/**
+ * Optimise les appels de callback en utilisant requestAnimationFrame
+ * @param {Function} callback - La fonction à optimiser
+ * @returns {Function} - La fonction optimisée
+ */
 function throttleRAF(callback) {
   let ticking = false;
   return function(...args) {
@@ -25,7 +40,12 @@ function throttleRAF(callback) {
   };
 }
 
-// Retarde l'exécution d'une fonction jusqu'à ce que l'utilisateur ait cessé d'interagir
+/**
+ * Retarde l'exécution d'une fonction jusqu'à ce que l'utilisateur ait cessé d'interagir
+ * @param {Function} func - La fonction à exécuter
+ * @param {number} wait - Délai d'attente en ms
+ * @returns {Function} - La fonction avec délai
+ */
 function debounce(func, wait) {
   let timeout;
   return function(...args) {
@@ -34,8 +54,11 @@ function debounce(func, wait) {
   };
 }
 
-// ======= RESPONSIVE HANDLING =======
-// Gère le redimensionnement de la fenêtre et adapte l'interface
+// ======= GESTION DU REDIMENSIONNEMENT =======
+
+/**
+ * Gère le redimensionnement de la fenêtre et adapte l'interface
+ */
 function handleResize() {
   const width = window.innerWidth;
   const wasMobile = lastWidth <= 768;
@@ -47,7 +70,7 @@ function handleResize() {
     return;
   }
   
-  // Réinitialiser le scrollytelling à chaque redimensionnement significatif
+  // Réinitialise le scrollytelling à chaque redimensionnement significatif
   if (scroller && Math.abs(window.innerWidth - lastWidth) > 50) {
     scroller.resize();
     lastWidth = window.innerWidth;
@@ -55,6 +78,7 @@ function handleResize() {
 }
 
 // ======= SYSTÈME DE CHARGEMENT =======
+
 document.addEventListener('DOMContentLoaded', function() {
   const loadingIndicator = document.getElementById('loading-indicator');
   
@@ -68,10 +92,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ======= INITIALISATION MAPLIBRE =======
+
+// Déclaration de la variable map globalement pour y accéder depuis toutes les fonctions
 var map = new maplibregl.Map({
   container: 'map',
-  style: 'https://basemaps.cartocdn.com/gl/voyager-nolabels-gl-style/style.json',
-  center: [132.49859, 34.38477],
+  style: 'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json',
+  center: [132.49859, 34.38477], // Coordonnées initiales (Hiroshima)
   zoom: 12.5,
   pitch: 0,
   bearing: 0,
@@ -97,7 +123,10 @@ map.on('error', function(e) {
   startIntroAnimations();
 });
 
-// Configuration des couches cartographiques
+/**
+ * Configuration des couches cartographiques
+ * Cette fonction est appelée une fois que la carte est chargée
+ */
 map.on('load', function() {
   console.log("Carte chargée avec succès");
   
@@ -110,13 +139,19 @@ map.on('load', function() {
   // Démarrer les animations
   startIntroAnimations();
 
-  // Ajouter le contrôle d'échelle ici
+  // Ajouter le contrôle d'échelle
   map.addControl(new maplibregl.ScaleControl({
     maxWidth: 100,
     unit: 'metric'
   }), 'bottom-left');
   
-  // Fonction pour ajouter des couches - toutes les couches sont créées avec visibilité 'visible'
+  /**
+   * Ajoute une couche à la carte
+   * @param {string} id - Identifiant de la couche
+   * @param {string} url - URL du fichier GeoJSON
+   * @param {string} color - Couleur à appliquer (format CSS)
+   * @param {number} opacity - Opacité de la couche (0-1)
+   */
   function addMapLayer(id, url, color, opacity = 0.8) {
     try {
       map.addSource(id, {
@@ -145,7 +180,7 @@ map.on('load', function() {
     }
   }
   
-  // --- Hiroshima ---
+  // --- Ajout des couches pour Hiroshima ---
   addMapLayer('hiroshima_detruit', 
     './assets/hiroshima/h_total_detruit.geojson', 
     '#af0d1d');
@@ -158,7 +193,7 @@ map.on('load', function() {
     './assets/hiroshima/h_sauve.geojson', 
     '#f39c9e');
 
-  // --- Nagasaki ---
+  // --- Ajout des couches pour Nagasaki ---
   addMapLayer('nagasaki_detruit', 
     './assets/nagasaki/n_total_detruit.geojson', 
     '#af0d1d');
@@ -171,7 +206,7 @@ map.on('load', function() {
     './assets/nagasaki/n_sauve.geojson', 
     '#f39c9e');
     
-  // --- Rennes (simulation fictive) ---
+  // --- Ajout des couches pour Rennes (simulation) ---
   addMapLayer('rennes_detruit', 
     './assets/rennes/tampon_1km6_4326.geojson', 
     '#af0d1d');
@@ -183,7 +218,7 @@ map.on('load', function() {
   // Ajout des points d'intérêt
   addPointsOfInterest();
 
-  // Par défaut, on cache toutes les couches jusqu'à ce qu'on arrive à la section correspondante
+  // Par défaut, on cache toutes les couches jusqu'à l'arrivée à la section correspondante
   const allLayers = [
     'hiroshima_detruit_layer', 'hiroshima_moinsdetruit_layer', 'hiroshima_sauve_layer',
     'nagasaki_detruit_layer', 'nagasaki_feu_layer', 'nagasaki_sauve_layer',
@@ -200,17 +235,20 @@ map.on('load', function() {
   // Configuration des boutons toggle pour la légende
   setupAllToggles();
   
-  // Initialisation selon la section courante avec un délai réduit
+  // Initialisation de la section courante avec un court délai
   setTimeout(() => {
     const currentSection = getCurrentSection();
     if (currentSection) {
       console.log("Section initiale détectée:", currentSection.id);
       handleStepEnter({ element: currentSection });
     }
-  }, 500); // Réduit à 500ms pour améliorer la réactivité
+  }, 500);
 });
 
-// Fonction pour ajouter les points d'intérêt
+/**
+ * Ajoute les points d'intérêt à la carte
+ * Ces points marquent les lieux spécifiques dans chaque ville
+ */
 function addPointsOfInterest() {
   try {
     // Ajouter la source de données pour les points d'intérêt
@@ -232,7 +270,7 @@ function addPointsOfInterest() {
         'circle-opacity': 0.8
       },
       layout: {
-        'visibility': 'visible' // Caché par défaut
+        'visibility': 'visible'
       }
     });
     
@@ -255,7 +293,7 @@ function addPointsOfInterest() {
         'text-offset': [0, -1.5],
         'text-anchor': 'bottom',
         'visibility': 'visible',
-        'text-allow-overlap': false, // Empêcher le chevauchement
+        'text-allow-overlap': false,
         'text-ignore-placement': false,
         'text-variable-anchor': [
           'bottom',
@@ -264,10 +302,10 @@ function addPointsOfInterest() {
           'top',
           'left',
           'right'
-        ], // Essayer différentes positions pour éviter les superpositions
+        ],
         'text-radial-offset': 0.5,
         'text-justify': 'center',
-        'text-optional': true // Permet de ne pas afficher certains labels si trop serrés
+        'text-optional': true
       },
       paint: {
         'text-color': '#ffffff',
@@ -285,7 +323,10 @@ function addPointsOfInterest() {
 }
 
 // ======= LÉGENDE INTERACTIVE =======
-// Fonction pour configurer tous les toggles
+
+/**
+ * Configure tous les boutons de légende pour toutes les villes
+ */
 function setupAllToggles() {
   // Hiroshima toggles
   setupToggle('toggle-destroyed-fixed');
@@ -299,18 +340,21 @@ function setupAllToggles() {
   setupToggle('toggle-naga-sauve-fixed');
   setupTogglePoints('toggle-poi-naga-fixed');
   
-  // Rennes toggles (nouveaux)
+  // Rennes toggles
   setupToggle('toggle-rennes-detruit-fixed');
   setupToggle('toggle-rennes-partiel-fixed');
   setupTogglePoints('toggle-poi-rennes-fixed');
   
-  // Ajout d'un toggle pour les points d'intérêt
+  // Toggle global pour les points d'intérêt
   setupTogglePoints('toggle-poi-fixed');
   
   console.log("Tous les boutons de légende ont été configurés");
 }
 
-// Fonction améliorée pour que la légende fonctionne dès le premier clic
+/**
+ * Configure un bouton toggle pour les couches de la carte
+ * @param {string} btnId - ID du bouton dans le DOM
+ */
 function setupToggle(btnId) {
   const btn = document.getElementById(btnId);
   if (!btn) {
@@ -318,14 +362,12 @@ function setupToggle(btnId) {
     return;
   }
   
-  // Log pour confirmer que le bouton est trouvé
   console.log(`Bouton de légende configuré: ${btnId}`);
   
   btn.addEventListener('click', function() {
     const layer = btn.getAttribute('data-layer');
     const isActive = btn.classList.contains('active');
     
-    // Log pour déboguer
     console.log(`Toggle clicked: ${btnId} for layer ${layer}, currently active: ${isActive}`);
     
     try {
@@ -334,7 +376,7 @@ function setupToggle(btnId) {
         const newVisibility = isActive ? 'none' : 'visible';
         map.setLayoutProperty(layer, 'visibility', newVisibility);
         
-        // Mettre à jour les classes CSS
+        // Mettre à jour l'apparence du bouton
         if (isActive) {
           btn.classList.remove('active');
           btn.classList.add('inactive');
@@ -355,7 +397,10 @@ function setupToggle(btnId) {
   });
 }
 
-// Fonction pour configurer le toggle des points d'intérêt
+/**
+ * Configure un bouton toggle spécifiquement pour les points d'intérêt
+ * @param {string} btnId - ID du bouton dans le DOM
+ */
 function setupTogglePoints(btnId) {
   const btn = document.getElementById(btnId);
   if (!btn) return;
@@ -370,6 +415,10 @@ function setupTogglePoints(btnId) {
 }
 
 // ======= ANIMATION DE L'INTRO =======
+
+/**
+ * Démarre les animations d'introduction de la page
+ */
 function startIntroAnimations() {
   console.log("Démarrage des animations");
   
@@ -393,11 +442,16 @@ function startIntroAnimations() {
 }
 
 // ======= SCROLLYTELLING =======
+
+// Variable globale pour le scrollytelling
 var scroller = scrollama();
 // Garder une trace de la section actuelle pour gérer les légendes
 var currentSection = "";
 
-// Fonction utilitaire pour obtenir la section actuelle visible
+/**
+ * Obtient la section actuellement visible à l'écran
+ * @returns {Element|null} - L'élément DOM de la section visible ou null
+ */
 function getCurrentSection() {
   if (isMobile()) {
     // Méthode pour mobile utilisant le scrollY de window
@@ -415,7 +469,7 @@ function getCurrentSection() {
       }
     }
   } else {
-    // Méthode originale pour desktop
+    // Méthode pour desktop
     const sections = document.querySelectorAll('.step');
     const scrollContainer = document.getElementById('scroll-container');
     const scrollPosition = scrollContainer.scrollTop + window.innerHeight / 2;
@@ -434,7 +488,11 @@ function getCurrentSection() {
   return null;
 }
 
-// Fonction utilitaire pour trouver la section suivante
+/**
+ * Trouve la section suivante dans le flux de scrollytelling
+ * @param {string} currentId - ID de la section actuelle
+ * @returns {string|null} - ID de la section suivante ou null
+ */
 function getNextSection(currentId) {
   const sections = document.querySelectorAll('.step');
   let foundCurrent = false;
@@ -451,7 +509,11 @@ function getNextSection(currentId) {
   return null;
 }
 
-// Fonction utilitaire pour trouver la section précédente
+/**
+ * Trouve la section précédente dans le flux de scrollytelling
+ * @param {string} currentId - ID de la section actuelle
+ * @returns {string|null} - ID de la section précédente ou null
+ */
 function getPreviousSection(currentId) {
   const sections = document.querySelectorAll('.step');
   
@@ -464,7 +526,11 @@ function getPreviousSection(currentId) {
   return null;
 }
 
-// Gestion des sections AMÉLIORÉE - affichage immédiat des couches
+/**
+ * Gère l'entrée dans une nouvelle section du scrollytelling
+ * Configure la carte et les légendes en fonction de la section
+ * @param {Object} response - Objet contenant l'élément entré
+ */
 function handleStepEnter(response) {
   const id = response.element.id;
   console.log(`Navigation vers la section: ${id}`);
@@ -481,7 +547,7 @@ function handleStepEnter(response) {
   if (legendNagasaki) legendNagasaki.style.display = "none";
   if (legendRennes) legendRennes.style.display = "none";
   
-  // Configuration spécifique par section avec couches visibles par défaut
+  // Configuration spécifique par section
   try {
     switch(id) {
       case "intro":
@@ -489,14 +555,7 @@ function handleStepEnter(response) {
         hideAllLayers();
         break;
 
-      // Nouvelle section pour la carte du Pacifique
-      case "pacific-map":
-        map.flyTo({ center: [160, 0], zoom: 3, duration: 1500 });
-        hideAllLayers();
-        break;
-        
-      // Nouvelle section pour le contexte du Pacifique
-      case "pacific-context":
+      case "pacific-combined":
         map.flyTo({ center: [160, 0], zoom: 3, duration: 1500 });
         hideAllLayers();
         break;
@@ -535,7 +594,6 @@ function handleStepEnter(response) {
         try {
           map.setLayoutProperty('poi_points', 'visibility', 'visible');
           map.setLayoutProperty('poi_labels', 'visibility', 'visible');
-          // Labels visibles seulement au survol
           resetPoiToggleButton(true);
         } catch (error) {
           console.error("Erreur d'affichage des points d'intérêt:", error);
@@ -543,7 +601,7 @@ function handleStepEnter(response) {
         
         // Cache les autres couches
         ['nagasaki_detruit_layer', 'nagasaki_feu_layer', 'nagasaki_sauve_layer',
-         'rennes_detruit_layer', 'rennes_partiel_layer', 'rennes_radius_layer'].forEach(layer => {
+         'rennes_detruit_layer', 'rennes_partiel_layer'].forEach(layer => {
           try {
             if (map.getLayer(layer)) {
               map.setLayoutProperty(layer, 'visibility', 'none');
@@ -608,7 +666,6 @@ function handleStepEnter(response) {
         hideAllLayers();
         break;
       
-      // Nouvelle section pour Rennes
       case "rennes-impact":
         map.flyTo({ center: [-1.64124, 48.11316], zoom: 11.8, bearing: 0, pitch: 0, duration: 8000});
         
@@ -618,7 +675,7 @@ function handleStepEnter(response) {
         }
         
         // Force l'affichage immédiat des couches de Rennes
-        ['rennes_detruit_layer', 'rennes_partiel_layer', 'rennes_radius_layer'].forEach(layer => {
+        ['rennes_detruit_layer', 'rennes_partiel_layer'].forEach(layer => {
           try {
             if (map.getLayer(layer)) {
               map.setLayoutProperty(layer, 'visibility', 'visible');
@@ -629,7 +686,7 @@ function handleStepEnter(response) {
           }
         });
         
-        // Cache les points d'intérêt pour Rennes
+        // Affiche les points d'intérêt pour Rennes
         try {
           map.setLayoutProperty('poi_points', 'visibility', 'visible');
           map.setLayoutProperty('poi_labels', 'visibility', 'visible');
@@ -662,7 +719,10 @@ function handleStepEnter(response) {
   }
 }
 
-// Fonction pour réinitialiser le bouton de toggle des points d'intérêt
+/**
+ * Réinitialise le bouton de toggle des points d'intérêt
+ * @param {boolean} active - État actif souhaité (true=activé, false=désactivé)
+ */
 function resetPoiToggleButton(active) {
   const btn = document.getElementById('toggle-poi-fixed');
   if (btn) {
@@ -678,7 +738,10 @@ function resetPoiToggleButton(active) {
   }
 }
 
-// SOLUTION AMÉLIORÉE: Gestionnaire pour la sortie des sections
+/**
+ * Gère la sortie d'une section du scrollytelling
+ * @param {Object} response - Objet contenant les informations sur la sortie de section
+ */
 function handleStepExit(response) {
   const { element, direction } = response;
   const id = element.id;
@@ -711,7 +774,9 @@ function handleStepExit(response) {
   }
 }
 
-// Fonction pour montrer uniquement les couches d'Hiroshima
+/**
+ * Montre uniquement les couches d'Hiroshima
+ */
 function showHiroshimaLayers() {
   if (!map.loaded()) return;
   
@@ -732,7 +797,7 @@ function showHiroshimaLayers() {
   
   // Cacher les autres couches
   ['nagasaki_detruit_layer', 'nagasaki_feu_layer', 'nagasaki_sauve_layer',
-   'rennes_detruit_layer', 'rennes_partiel_layer', 'rennes_radius_layer'].forEach(layer => {
+   'rennes_detruit_layer', 'rennes_partiel_layer'].forEach(layer => {
     try {
       if (map.getLayer(layer)) {
         map.setLayoutProperty(layer, 'visibility', 'none');
@@ -741,7 +806,9 @@ function showHiroshimaLayers() {
   });
 }
 
-// Fonction pour montrer uniquement les couches de Nagasaki
+/**
+ * Montre uniquement les couches de Nagasaki
+ */
 function showNagasakiLayers() {
   if (!map.loaded()) return;
   
@@ -762,7 +829,7 @@ function showNagasakiLayers() {
   
   // Cacher les autres couches
   ['hiroshima_detruit_layer', 'hiroshima_moinsdetruit_layer', 'hiroshima_sauve_layer',
-   'rennes_detruit_layer', 'rennes_partiel_layer', 'rennes_radius_layer'].forEach(layer => {
+   'rennes_detruit_layer', 'rennes_partiel_layer'].forEach(layer => {
     try {
       if (map.getLayer(layer)) {
         map.setLayoutProperty(layer, 'visibility', 'none');
@@ -771,23 +838,26 @@ function showNagasakiLayers() {
   });
 }
 
-// Fonction pour montrer uniquement les couches de Rennes
+/**
+ * Montre uniquement les couches de Rennes
+ */
 function showRennesLayers() {
   if (!map.loaded()) return;
   
   // Afficher les couches de Rennes
-  ['rennes_detruit_layer', 'rennes_partiel_layer', 'rennes_radius_layer'].forEach(layer => {
-    try {if (map.getLayer(layer)) {
+  ['rennes_detruit_layer', 'rennes_partiel_layer'].forEach(layer => {
+    try {
+      if (map.getLayer(layer)) {
         map.setLayoutProperty(layer, 'visibility', 'visible');
       }
     } catch (error) {}
   });
   
-  // Cacher les points d'intérêt pour Rennes
+  // Ajuster les points d'intérêt pour Rennes
   try {
-    map.setLayoutProperty('poi_points', 'visibility', 'none');
-    map.setLayoutProperty('poi_labels', 'visibility', 'none');
-    resetPoiToggleButton(false);
+    map.setLayoutProperty('poi_points', 'visibility', 'visible');
+    map.setLayoutProperty('poi_labels', 'visibility', 'visible');
+    resetPoiToggleButton(true);
   } catch (error) {}
   
   // Cacher les autres couches
@@ -801,14 +871,16 @@ function showRennesLayers() {
   });
 }
 
-// Fonction pour cacher toutes les couches - optimisée pour éviter les erreurs inutiles
+/**
+ * Cache toutes les couches cartographiques
+ */
 function hideAllLayers() {
   if (!map.loaded()) return;
   
   const allLayers = [
     'hiroshima_detruit_layer', 'hiroshima_moinsdetruit_layer', 'hiroshima_sauve_layer',
     'nagasaki_detruit_layer', 'nagasaki_feu_layer', 'nagasaki_sauve_layer',
-    'rennes_detruit_layer', 'rennes_partiel_layer', 'rennes_radius_layer',
+    'rennes_detruit_layer', 'rennes_partiel_layer',
     'poi_points', 'poi_labels'
   ];
   
@@ -818,12 +890,15 @@ function hideAllLayers() {
         map.setLayoutProperty(layer, 'visibility', 'none');
       }
     } catch (error) {
-      // Ne pas logguer les erreurs ici pour éviter de surcharger la console
+      // Ne pas logger les erreurs pour éviter de surcharger la console
     }
   });
 }
 
-// Fonction pour réinitialiser les boutons de légende à l'état actif
+/**
+ * Réinitialise les boutons de légende à l'état actif pour une ville donnée
+ * @param {string} city - Ville concernée ('hiroshima', 'nagasaki' ou 'rennes')
+ */
 function resetLegendButtons(city) {
   if (city === 'hiroshima') {
     // Réinitialiser les boutons d'Hiroshima
@@ -847,7 +922,7 @@ function resetLegendButtons(city) {
     });
   } else if (city === 'rennes') {
     // Réinitialiser les boutons de Rennes
-    ['toggle-rennes-detruit-fixed', 'toggle-rennes-partiel-fixed', 'toggle-rennes-radiation-fixed'].forEach(btnId => {
+    ['toggle-rennes-detruit-fixed', 'toggle-rennes-partiel-fixed'].forEach(btnId => {
       const btn = document.getElementById(btnId);
       if (btn) {
         btn.classList.add('active');
@@ -858,10 +933,13 @@ function resetLegendButtons(city) {
   }
 }
 
-// Initialisation du scrollytelling AMÉLIORÉE pour prendre en charge les mobiles
+/**
+ * Initialise le système de scrollytelling
+ * Configuration différente pour mobile et desktop
+ */
 function initScrollytelling() {
   try {
-    // Configuration différente pour mobile et desktop
+    // Configuration adaptée selon le type d'appareil
     if (isMobile()) {
       // Sur mobile, on utilise une configuration plus simple
       scroller.setup({
@@ -884,7 +962,7 @@ function initScrollytelling() {
         scrollContainer.style.overflow = 'visible';
       }
     } else {
-      // Configuration originale pour desktop
+      // Configuration pour desktop
       scroller.setup({
         container: "#scroll-container",
         step: ".step",
@@ -895,7 +973,7 @@ function initScrollytelling() {
       .onStepExit(handleStepExit);
     }
     
-    // Animation optimisée de la timeline au scroll
+    // Animation de la timeline au scroll
     const timelineItems = document.querySelectorAll('.timeline-item');
     
     const observer = new IntersectionObserver((entries) => {
@@ -905,7 +983,7 @@ function initScrollytelling() {
           const index = Array.from(timelineItems).indexOf(entry.target);
           setTimeout(() => {
             entry.target.classList.add('visible');
-          }, index * 100); // Animation plus rapide
+          }, index * 100);
         }
       });
     }, { threshold: 0.25 });
@@ -917,7 +995,7 @@ function initScrollytelling() {
     // Autres initialisations
     initTabs();
     initProgressBar();
-    initBombInfographic(); // Nouvelle fonction pour les infographies de bombes
+    initBombInfographic();
     
     // Position initiale
     setTimeout(() => {
@@ -925,13 +1003,17 @@ function initScrollytelling() {
       if (firstStep) {
         handleStepEnter({ element: firstStep });
       }
-    }, 300); // Réactivité accrue
+    }, 300);
   } catch (error) {
     console.error("Erreur d'initialisation du scrollytelling:", error);
   }
 }
 
 // ======= TABS POUR L'INFOGRAPHIE =======
+
+/**
+ * Initialise les onglets dans la section infographie
+ */
 function initTabs() {
   const tabButtons = document.querySelectorAll('.tab-btn');
   
@@ -960,12 +1042,19 @@ function initTabs() {
 }
 
 // ======= Gestion de l'affichage des bombes =======
+
+/**
+ * Initialise l'infographie des bombes
+ */
 function initBombInfographic() {
   // Initialiser le contenu avec l'image de Little Boy (Hiroshima est l'onglet par défaut)
   updateBombDisplay('tab-hiroshima');
 }
 
-// Mise à jour de la fonction pour utiliser les nouvelles images fournies
+/**
+ * Met à jour l'affichage de l'infographie des bombes en fonction de l'onglet actif
+ * @param {string} tabId - ID de l'onglet actif
+ */
 function updateBombDisplay(tabId) {
   const bombDisplay = document.getElementById('bomb-display');
   
@@ -1011,7 +1100,12 @@ function updateBombDisplay(tabId) {
   bombDisplay.innerHTML = bombHtml;
 }
 
-// ======= BARRE DE PROGRESSION OPTIMISÉE POUR MOBILE =======
+// ======= BARRE DE PROGRESSION =======
+
+/**
+ * Initialise la barre de progression du scrollytelling
+ * Version optimisée pour mobile et desktop
+ */
 function initProgressBar() {
   const progressBar = document.getElementById('progress-bar');
   const progressIndicator = document.getElementById('progress-indicator');
@@ -1052,29 +1146,26 @@ function initProgressBar() {
       lastScrollPosition = scrollTop;
     }
     
-    // Mettre à jour directement le style sans requestAnimationFrame
+    // Mettre à jour directement le style
     progressBar.style.width = scrollProgress + '%';
     progressIndicator.style.left = scrollProgress + '%';
     
     lastScrollTime = now;
   };
   
-  // Sur mobile, on écoute l'événement de défilement sur la fenêtre
+  // Ajouter les écouteurs d'événements appropriés selon le type d'appareil
   if (isMobile()) {
     window.addEventListener('scroll', updateProgressBar);
   } else {
-    // Sur desktop, on écoute l'événement de défilement sur le conteneur
     if (scrollContainer) {
       scrollContainer.addEventListener('scroll', updateProgressBar);
     }
   }
 }
 
-
-
-
-
-
+/**
+ * Gère l'affichage de la bibliographie dans le footer
+ */
 function toggleBibliography() {
   const content = document.getElementById('bibliography');
   const toggle = document.querySelector('.bibliography-toggle');
@@ -1095,26 +1186,19 @@ function toggleBibliography() {
   }
 }
 
-// INITIALIZE
+// Initialisation de la bibliographie
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('.bibliography-toggle');
   const content = document.getElementById('bibliography');
   
-  toggle.setAttribute('aria-expanded', 'false');
-  content.setAttribute('aria-hidden', 'true');
+  if (toggle && content) {
+    toggle.setAttribute('aria-expanded', 'false');
+    content.setAttribute('aria-hidden', 'true');
+  }
 });
 
-
-
-
-
-
-
-
-
-
-
 // ======= INITIALISATION GÉNÉRALE =======
+
 document.addEventListener('DOMContentLoaded', function() {
   console.log("DOM chargé, initialisation...");
   
@@ -1130,7 +1214,9 @@ document.addEventListener('DOMContentLoaded', function() {
   handleResize();
 });
 
-// Fonction pour précacher les ressources importantes
+/**
+ * Préchargement des ressources importantes pour optimiser les performances
+ */
 function precacheResources() {
   // Préchargement des images pour éviter les retards de rendu
   const urls = [
@@ -1142,9 +1228,6 @@ function precacheResources() {
     './assets/timeline/IWO.webp',
     './assets/timeline/OKINAWA.webp',
     './assets/timeline/TRINIT.webp',
-    './assets/timeline/POTSDAM.webp',
-    './assets/timeline/URANIUMY.webp',
-    './assets/timeline/NAGASAKI.webp',
     'https://paradigm-from-asia-africa.com/media/images/top/top_img_genbaku.jpg',
     './assets/carte_pacifique/pacific_ok.png'
   ];
