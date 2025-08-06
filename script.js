@@ -1237,3 +1237,21 @@ function precacheResources() {
     img.src = url;
   });
 }
+
+function blockMobileDevices() {
+  const blocker = document.getElementById("mobile-blocker");
+  
+  // Détection simplifiée
+  const isMobileUserAgent = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const hasSmallScreen = window.innerWidth <= 768;
+  
+  const isReallyMobile = isMobileUserAgent && hasSmallScreen;
+  
+  if (isReallyMobile && blocker) {
+    document.body.innerHTML = '';
+    document.body.appendChild(blocker);
+    blocker.classList.remove("mobile-hidden");
+  }
+}
+
+window.addEventListener("DOMContentLoaded", blockMobileDevices);
